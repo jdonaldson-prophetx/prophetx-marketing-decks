@@ -2,14 +2,6 @@ import { useState, useEffect, useCallback, useRef } from "react";
 
 const fonts = `@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');`;
 
-// ╔══════════════════════════════════════════════════════════════╗
-// ║  PROPHETX MASTER TEMPLATE SYSTEM                           ║
-// ║  Controlled by: jeff@prophetx.co                           ║
-// ║  DO NOT modify THEMES, fonts, or NAV ENGINE                ║
-// ║  To deploy: set ACTIVE_FORMAT, ACTIVE_THEME, and DECK meta ║
-// ╚══════════════════════════════════════════════════════════════╝
-
-// ── LOCKED DESIGN TOKENS ─────────────────────────────────────
 const THEMES = {
   dark: {
     id: "dark", label: "DARK",
@@ -46,7 +38,6 @@ const FORMATS = {
   scroll:    { id: "scroll",    label: "SCROLL DOC", icon: "◎" },
 };
 
-// ── DECK METADATA — edit per deployment ──────────────────────
 const DECK = {
   title: "Deck Title",
   subtitle: "A short description of this deck and its purpose.",
@@ -57,58 +48,58 @@ const DECK = {
   url: "prophetx-marketing-[deckname]",
 };
 
-// ── SHARED PRIMITIVES ─────────────────────────────────────────
 const f = { sora: "'Sora', sans-serif", mono: "'JetBrains Mono', monospace" };
 
-// ProphetX icon mark — exact paths from official SVG (169×105 viewBox)
-function BrandMark({ T, size = 26 }) {
+// ProphetX icon mark — official SVG paths
+function BrandMark({ size = 26 }) {
   const w = size * (169 / 105);
   const h = size;
+  const id = Math.random().toString(36).substr(2, 6);
   return (
     <svg width={w} height={h} viewBox="0 0 169 105" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
       <defs>
-        <linearGradient id="bm_g0" x1="132.891" y1="109.971" x2="31.7446" y2="8.8241" gradientUnits="userSpaceOnUse">
+        <linearGradient id={`bm_g0_${id}`} x1="132.891" y1="109.971" x2="31.7446" y2="8.8241" gradientUnits="userSpaceOnUse">
           <stop stopColor="#1DC29A"/><stop offset="0.1032" stopColor="#19BE9D"/>
           <stop offset="0.6255" stopColor="#06ADAA"/><stop offset="1" stopColor="#00A7AF"/>
         </linearGradient>
-        <linearGradient id="bm_g1" x1="79.5233" y1="52.5572" x2="-65.2089" y2="52.5572" gradientUnits="userSpaceOnUse">
+        <linearGradient id={`bm_g1_${id}`} x1="79.5233" y1="52.5572" x2="-65.2089" y2="52.5572" gradientUnits="userSpaceOnUse">
           <stop stopColor="#1DC29A"/><stop offset="1" stopColor="#00A7AF"/>
         </linearGradient>
-        <linearGradient id="bm_g2" x1="26.0754" y1="2.10817" x2="98.5236" y2="43.9991" gradientUnits="userSpaceOnUse">
+        <linearGradient id={`bm_g2_${id}`} x1="26.0754" y1="2.10817" x2="98.5236" y2="43.9991" gradientUnits="userSpaceOnUse">
           <stop stopColor="#1DC29A"/><stop offset="0.3631" stopColor="#18BD9E"/>
           <stop offset="0.802" stopColor="#09AFA8"/><stop offset="1" stopColor="#00A7AF"/>
         </linearGradient>
       </defs>
-      <path d="M79.5234 73.6005L100.056 104.656H138.201L104.959 54.5195L79.5234 73.6005Z" fill="url(#bm_g0)"/>
-      <path d="M119.241 0.464844L123.153 6.2216L92.2171 29.4536L89.5351 31.4011L64.0995 50.4821L61.4004 52.5661L30.4643 75.6615L26.6891 69.9218L0.0234375 104.65H49.6648L45.8725 98.7739L76.8088 75.6615L79.5078 73.5945L104.943 54.5135L107.625 52.549L138.562 29.4536L142.354 35.1933L169.002 0.464844H119.241Z" fill="url(#bm_g1)"/>
-      <path d="M30.8438 0.464844L64.1031 50.4821L89.5388 31.4011L68.8691 0.464844H30.8438Z" fill="url(#bm_g2)"/>
+      <path d="M79.5234 73.6005L100.056 104.656H138.201L104.959 54.5195L79.5234 73.6005Z" fill={`url(#bm_g0_${id})`}/>
+      <path d="M119.241 0.464844L123.153 6.2216L92.2171 29.4536L89.5351 31.4011L64.0995 50.4821L61.4004 52.5661L30.4643 75.6615L26.6891 69.9218L0.0234375 104.65H49.6648L45.8725 98.7739L76.8088 75.6615L79.5078 73.5945L104.943 54.5135L107.625 52.549L138.562 29.4536L142.354 35.1933L169.002 0.464844H119.241Z" fill={`url(#bm_g1_${id})`}/>
+      <path d="M30.8438 0.464844L64.1031 50.4821L89.5388 31.4011L68.8691 0.464844H30.8438Z" fill={`url(#bm_g2_${id})`}/>
     </svg>
   );
 }
 
-// Full wordmark — white version for dark backgrounds, dark for light
 function Wordmark({ size = 18, color = "white" }) {
   const h = size;
   const w = size * (886 / 100);
+  const id = Math.random().toString(36).substr(2, 6);
   return (
     <svg width={w} height={h} viewBox="0 0 886 100" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
       <defs>
-        <linearGradient id="wm_g0" x1="853.77" y1="100.796" x2="763.522" y2="10.5487" gradientUnits="userSpaceOnUse">
+        <linearGradient id={`wm_g0_${id}`} x1="853.77" y1="100.796" x2="763.522" y2="10.5487" gradientUnits="userSpaceOnUse">
           <stop stopColor="#1DC29A"/><stop offset="0.1032" stopColor="#19BE9D"/>
           <stop offset="0.6255" stopColor="#06ADAA"/><stop offset="1" stopColor="#00A7AF"/>
         </linearGradient>
-        <linearGradient id="wm_g1" x1="806.164" y1="49.573" x2="677.027" y2="49.573" gradientUnits="userSpaceOnUse">
+        <linearGradient id={`wm_g1_${id}`} x1="806.164" y1="49.573" x2="677.027" y2="49.573" gradientUnits="userSpaceOnUse">
           <stop stopColor="#1DC29A"/><stop offset="1" stopColor="#00A7AF"/>
         </linearGradient>
-        <linearGradient id="wm_g2" x1="758.472" y1="4.56" x2="823.114" y2="41.9371" gradientUnits="userSpaceOnUse">
+        <linearGradient id={`wm_g2_${id}`} x1="758.472" y1="4.56" x2="823.114" y2="41.9371" gradientUnits="userSpaceOnUse">
           <stop stopColor="#1DC29A"/><stop offset="0.3631" stopColor="#18BD9E"/>
           <stop offset="0.802" stopColor="#09AFA8"/><stop offset="1" stopColor="#00A7AF"/>
         </linearGradient>
       </defs>
       <path d="M112.758 31.1998C112.758 60.4181 90.8558 76.7877 63.0702 76.7877H36.9611L30.6511 96.038H0L30.3158 3.07881H77.3517C100.153 3.09405 112.758 11.1722 112.758 31.1998ZM81.3297 36.8544C81.3297 31.3217 78.2357 28.5477 70.813 28.5477H52.782L45.1459 51.6694L64.2895 51.5627C74.029 51.5627 81.3297 45.9233 81.3297 36.8544ZM196.664 66.1795L203.523 96.0532H174.091L168.893 72.1542H144.324L136.688 96.0532H106.037L135.91 3.09407H184.379C207.943 3.09407 219.343 12.0562 219.343 30.2091C219.359 46.914 209.513 59.3055 196.664 66.1795ZM151.64 49.688L172.887 49.5813C179.532 49.5813 188.159 45.2679 188.159 36.7477C188.159 30.5444 184.623 28.5629 177.429 28.5629H158.392L151.64 49.688ZM221.249 60.8601C221.249 28.7763 249.461 0 287.093 0C314.314 0 329.922 14.4949 329.922 38.2872C329.922 70.371 301.71 99.1473 264.078 99.1473C236.841 99.1473 221.249 84.6524 221.249 60.8601ZM299.362 43.1493C299.362 31.9771 291.513 26.4444 282.094 26.4444C263.941 26.4444 251.991 42.1586 251.778 55.9828C251.778 67.155 259.627 72.6877 269.047 72.6877C287.2 72.703 299.149 56.9887 299.362 43.1493ZM435.257 31.1998C435.257 60.4181 413.355 76.7877 385.57 76.7877H359.46L353.15 96.038H322.499L352.815 3.07881H399.851C422.637 3.09405 435.257 11.1722 435.257 31.1998ZM403.829 36.8544C403.829 31.3217 400.735 28.5477 393.312 28.5477H375.281L367.645 51.6694L386.789 51.5627C396.528 51.5627 403.829 45.9233 403.829 36.8544ZM554.265 3.09407L524.391 96.0532H493.74L504.257 63.5274H468.622L458.105 96.0532H427.454L457.327 3.09407H487.979L476.684 38.0585H512.32L523.614 3.09407H554.265ZM587.431 27.557L583.559 39.5065H636.677L630.26 59.0921H577.249L573.149 71.5903H626.48L618.509 96.038H534.633L564.629 3.07881H648.84L640.868 27.5418H587.431V27.557ZM746.966 28.6544H714.211L692.187 96.038H661.536L683.56 28.6544H650.028L658.213 3.09407H755.257L746.966 28.6544Z" fill={color}/>
-      <path d="M806.152 68.3453L824.473 96.0547H858.508L828.847 51.3203L806.152 68.3453Z" fill="url(#wm_g0)"/>
-      <path d="M841.602 3.09375L845.093 8.2302L817.49 28.9589L815.097 30.6965L792.402 47.7215L789.994 49.581L762.391 70.1877L759.023 65.0665L735.23 96.0529H779.523L776.139 90.8098L803.742 70.1877L806.15 68.3435L828.845 51.3185L831.238 49.5657L858.841 28.9589L862.224 34.0801L886.001 3.09375H841.602Z" fill="url(#wm_g1)"/>
-      <path d="M762.727 3.09375L792.402 47.7215L815.097 30.6965L796.655 3.09375H762.727Z" fill="url(#wm_g2)"/>
+      <path d="M806.152 68.3453L824.473 96.0547H858.508L828.847 51.3203L806.152 68.3453Z" fill={`url(#wm_g0_${id})`}/>
+      <path d="M841.602 3.09375L845.093 8.2302L817.49 28.9589L815.097 30.6965L792.402 47.7215L789.994 49.581L762.391 70.1877L759.023 65.0665L735.23 96.0529H779.523L776.139 90.8098L803.742 70.1877L806.15 68.3435L828.845 51.3185L831.238 49.5657L858.841 28.9589L862.224 34.0801L886.001 3.09375H841.602Z" fill={`url(#wm_g1_${id})`}/>
+      <path d="M762.727 3.09375L792.402 47.7215L815.097 30.6965L796.655 3.09375H762.727Z" fill={`url(#wm_g2_${id})`}/>
     </svg>
   );
 }
@@ -152,7 +143,6 @@ function StatBox({ T, value, label, color }) {
   );
 }
 
-// ── BAR CHART (pure CSS) ─────────────────────────────────────
 function BarChart({ T, data }) {
   const max = Math.max(...data.map(d => d.value));
   return (
@@ -170,7 +160,6 @@ function BarChart({ T, data }) {
   );
 }
 
-// ── SLIDE WRAPPER ─────────────────────────────────────────────
 function Slide({ children, style = {} }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", height: "100%", padding: "0 clamp(22px, 5vw, 72px)", gap: 20, ...style }}>
@@ -179,18 +168,14 @@ function Slide({ children, style = {} }) {
   );
 }
 
-// ╔══════════════════════════════════════════════════════════════╗
-// ║  FORMAT 1: PROPOSAL                                        ║
-// ╚══════════════════════════════════════════════════════════════╝
-
+// ── PROPOSAL SLIDES ──────────────────────────────────────────
 const PROPOSAL_SLIDES = [
   function PropTitle({ T }) {
     return (
       <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "100%", textAlign: "center", padding: "0 clamp(32px, 7vw, 120px)", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "38%", left: "50%", width: 560, height: 360, background: `radial-gradient(ellipse, ${T.accentGlow} 0%, transparent 65%)`, transform: "translate(-50%,-50%)", pointerEvents: "none" }} />
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 32, position: "relative" }}>
-          <BrandMark T={T} size={28} />
-          <span style={{ fontFamily: f.sora, fontWeight: 800, fontSize: 15, color: T.text, letterSpacing: "-0.02em" }}>PROPHETX</span>
+          <BrandMark size={28} />
           <span style={{ fontFamily: f.mono, fontSize: 9, color: T.textDim, letterSpacing: "0.12em", textTransform: "uppercase" }}>Marketing</span>
         </div>
         <h1 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(26px, 4vw, 54px)", color: T.text, margin: 0, lineHeight: 1.05, letterSpacing: "-0.04em", position: "relative", maxWidth: 700 }}>
@@ -233,12 +218,12 @@ const PROPOSAL_SLIDES = [
   },
   function PropOpportunity({ T }) {
     const without = ["Manual process 1 — describe the friction", "Manual process 2 — describe the friction", "Scaling output requires scaling headcount", "Knowledge lives in people's heads", "Slow feedback loops"];
-    const withAI  = ["Automated version of process 1", "Automated version of process 2", "Scaling output = refining the system", "Knowledge codified and reusable", "Real-time insights surfaced automatically"];
+    const withIt = ["Automated version of process 1", "Automated version of process 2", "Scaling output = refining the system", "Knowledge codified and reusable", "Real-time insights surfaced automatically"];
     return (
       <Slide>
         <div><Label T={T}>The Opportunity</Label><H1 T={T}>The problem is <span style={{ color: T.accent }}>real.</span> The solution is ready.</H1><Sub T={T}>Replace with a one-sentence framing of the opportunity and why now is the right time.</Sub></div>
         <div style={{ display: "flex", gap: 12 }}>
-          {[{ label: "Without", items: without, color: T.red }, { label: "With", items: withAI, color: T.accent }].map(col => (
+          {[{ label: "Without", items: without, color: T.red }, { label: "With", items: withIt, color: T.accent }].map(col => (
             <div key={col.label} style={{ flex: 1, background: `linear-gradient(145deg, ${col.color}12, ${col.color}04)`, border: `1px solid ${col.color}25`, borderRadius: 12, padding: "18px 16px", display: "flex", flexDirection: "column", gap: 10 }}>
               <div style={{ fontFamily: f.mono, fontSize: 10, color: col.color, textTransform: "uppercase", letterSpacing: "0.1em" }}>{col.label}</div>
               {col.items.map((t, i) => (
@@ -285,7 +270,7 @@ const PROPOSAL_SLIDES = [
   function PropShowTell({ T }) {
     return (
       <Slide>
-        <div><Label T={T}>Show & Tell</Label><H1 T={T}>Here's what it <span style={{ color: T.accent }}>already looks like.</span></H1><Sub T={T}>Replace with context about the demonstration — what you're showing and why it's relevant evidence.</Sub></div>
+        <div><Label T={T}>Show & Tell</Label><H1 T={T}>Here's what it <span style={{ color: T.accent }}>already looks like.</span></H1><Sub T={T}>Replace with context about the demonstration.</Sub></div>
         <div style={{ display: "flex", gap: 12 }}>
           {[{ v: "Metric 1", l: "Replace label", c: T.accent }, { v: "Metric 2", l: "Replace label", c: T.second }, { v: "Metric 3", l: "Replace label", c: T.yellow }].map((s, i) => <StatBox key={i} T={T} value={s.v} label={s.l} color={s.c} />)}
         </div>
@@ -308,9 +293,9 @@ const PROPOSAL_SLIDES = [
   },
   function PropVision({ T }) {
     const phases = [
-      { phase: "Phase 1", label: "Solo", status: "Now", color: T.accent, desc: "Replace with Phase 1 description — the current state and what's already proven." },
-      { phase: "Phase 2", label: "Team", status: "Q2 2025", color: T.second, desc: "Replace with Phase 2 description — the expansion plan and what it unlocks." },
-      { phase: "Phase 3", label: "Org", status: "Q3 2025", color: T.yellow, desc: "Replace with Phase 3 description — the long-term vision and org-wide impact." },
+      { phase: "Phase 1", label: "Solo", status: "Now", color: T.accent, desc: "Replace with Phase 1 description." },
+      { phase: "Phase 2", label: "Team", status: "Q2 2025", color: T.second, desc: "Replace with Phase 2 description." },
+      { phase: "Phase 3", label: "Org", status: "Q3 2025", color: T.yellow, desc: "Replace with Phase 3 description." },
     ];
     return (
       <Slide>
@@ -334,7 +319,7 @@ const PROPOSAL_SLIDES = [
   },
   function PropRoadmap({ T }) {
     const ms = [
-      { period: "Now", items: ["Milestone already complete", "Milestone already complete", "Milestone already complete"] },
+      { period: "Now", items: ["Milestone already complete", "Milestone already complete"] },
       { period: "30 Days", items: ["First near-term milestone", "Second near-term milestone"] },
       { period: "60 Days", items: ["First mid-term milestone", "Second mid-term milestone"] },
       { period: "90 Days", items: ["First long-term milestone", "Second long-term milestone"] },
@@ -360,16 +345,16 @@ const PROPOSAL_SLIDES = [
             </div>
           ))}
         </div>
-        <Banner T={T}>Replace with a note on timeline confidence — what's locked vs. what's indicative.</Banner>
+        <Banner T={T}>Replace with a note on timeline confidence.</Banner>
       </Slide>
     );
   },
   function PropResources({ T }) {
     return (
       <Slide>
-        <div><Label T={T}>Resource Ask</Label><H1 T={T}>The investment is <span style={{ color: T.accent }}>minimal.</span> The return is not.</H1><Sub T={T}>Replace with a framing sentence about the ask — position it relative to expected return.</Sub></div>
+        <div><Label T={T}>Resource Ask</Label><H1 T={T}>The investment is <span style={{ color: T.accent }}>minimal.</span> The return is not.</H1><Sub T={T}>Replace with a framing sentence about the ask.</Sub></div>
         <div style={{ display: "flex", gap: 12 }}>
-          {[{ cat: "Tooling", color: T.accent, rows: [{ l: "Tool / platform 1", v: "$0", n: "Note about this item" }, { l: "Tool / platform 2", v: "$X/mo", n: "Note about this item" }, { l: "Tool / platform 3", v: "Existing", n: "Note about this item" }] }, { cat: "Time", color: T.second, rows: [{ l: "Time investment 1", v: "X hrs", n: "One-time" }, { l: "Time investment 2", v: "X hrs/mo", n: "Ongoing" }, { l: "Time investment 3", v: "Embedded", n: "Part of normal workflow" }] }].map((cat, i) => (
+          {[{ cat: "Tooling", color: T.accent, rows: [{ l: "Tool / platform 1", v: "$0", n: "Note" }, { l: "Tool / platform 2", v: "$X/mo", n: "Note" }] }, { cat: "Time", color: T.second, rows: [{ l: "Time investment 1", v: "X hrs", n: "One-time" }, { l: "Time investment 2", v: "X hrs/mo", n: "Ongoing" }] }].map((cat, i) => (
             <Card T={T} key={i} style={{ flex: 1 }}>
               <div style={{ fontFamily: f.mono, fontSize: 10, color: cat.color, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>{cat.cat}</div>
               {cat.rows.map((r, j) => (
@@ -386,21 +371,20 @@ const PROPOSAL_SLIDES = [
         </div>
         <div style={{ padding: "12px 16px", background: T.accentDim, border: `1px solid ${T.accent}28`, borderRadius: 10 }}>
           <div style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 12, color: T.text, marginBottom: 3 }}>What I'm asking for</div>
-          <div style={{ fontFamily: f.sora, fontSize: 12, color: T.textMid, lineHeight: 1.5 }}>Replace with a plain-English statement of the specific ask — approval, budget, seats, or calendar time.</div>
+          <div style={{ fontFamily: f.sora, fontSize: 12, color: T.textMid, lineHeight: 1.5 }}>Replace with a plain-English statement of the specific ask.</div>
         </div>
       </Slide>
     );
   },
   function PropTeam({ T }) {
     const team = [
-      { name: "Team Member Name", role: "Role / Title", owns: "Area of ownership within this proposal", tag: "Owner" },
-      { name: "Team Member Name", role: "Role / Title", owns: "Area of ownership within this proposal", tag: "User" },
-      { name: "Team Member Name", role: "Role / Title", owns: "Area of ownership within this proposal", tag: "User" },
-      { name: "Team Member Name", role: "Role / Title", owns: "Area of ownership within this proposal", tag: "User" },
+      { name: "Team Member Name", role: "Role / Title", owns: "Area of ownership", tag: "Owner" },
+      { name: "Team Member Name", role: "Role / Title", owns: "Area of ownership", tag: "User" },
+      { name: "Team Member Name", role: "Role / Title", owns: "Area of ownership", tag: "User" },
     ];
     return (
       <Slide>
-        <div><Label T={T}>The Team</Label><H1 T={T}>One system. <span style={{ color: T.accent }}>Every person.</span></H1><Sub T={T}>Replace with a sentence about how the team is structured around this proposal.</Sub></div>
+        <div><Label T={T}>The Team</Label><H1 T={T}>One system. <span style={{ color: T.accent }}>Every person.</span></H1><Sub T={T}>Replace with a sentence about how the team is structured.</Sub></div>
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {team.map((m, i) => (
             <div key={i} style={{ display: "flex", gap: 14, alignItems: "center", padding: "12px 16px", background: T.card, border: `1px solid ${i === 0 ? T.accent + "40" : T.border}`, borderRadius: 10 }}>
@@ -423,9 +407,9 @@ const PROPOSAL_SLIDES = [
   },
   function PropNextSteps({ T }) {
     const steps = [
-      { n: "01", title: "First action item", desc: "Replace with a specific, ownable action — who does what by when." },
-      { n: "02", title: "Second action item", desc: "Replace with a specific, ownable action — who does what by when." },
-      { n: "03", title: "Third action item", desc: "Replace with a specific, ownable action — who does what by when." },
+      { n: "01", title: "First action item", desc: "Replace — specific, ownable, time-bound." },
+      { n: "02", title: "Second action item", desc: "Replace — specific, ownable, time-bound." },
+      { n: "03", title: "Third action item", desc: "Replace — specific, ownable, time-bound." },
     ];
     return (
       <Slide>
@@ -443,7 +427,7 @@ const PROPOSAL_SLIDES = [
         </div>
         <div style={{ display: "flex", gap: 10 }}>
           <div style={{ flex: 1, background: T.accentDim, border: `1px solid ${T.accent}30`, borderRadius: 10, padding: "12px 16px", display: "flex", gap: 10, alignItems: "center" }}>
-            <BrandMark T={T} size={22} />
+            <BrandMark size={22} />
             <div>
               <div style={{ fontFamily: f.sora, fontWeight: 600, fontSize: 12, color: T.text }}>Prepared by {DECK.presenter}</div>
               <div style={{ fontFamily: f.mono, fontSize: 10, color: T.textDim }}>{DECK.contact}</div>
@@ -457,20 +441,16 @@ const PROPOSAL_SLIDES = [
     );
   },
 ];
-
 const PROPOSAL_LABELS = ["Title", "Summary", "Opportunity", "Approach", "Show & Tell", "Vision", "Roadmap", "Resources", "Team", "Next Steps"];
 
-// ╔══════════════════════════════════════════════════════════════╗
-// ║  FORMAT 2: REPORTING DECK                                  ║
-// ╚══════════════════════════════════════════════════════════════╝
-
+// ── REPORTING SLIDES ─────────────────────────────────────────
 const REPORTING_SLIDES = [
   function RepTitle({ T }) {
     return (
       <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "100%", textAlign: "center", padding: "0 clamp(32px, 7vw, 120px)", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "35%", left: "50%", width: 500, height: 340, background: `radial-gradient(ellipse, ${T.accentGlow} 0%, transparent 65%)`, transform: "translate(-50%,-50%)", pointerEvents: "none" }} />
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 28, position: "relative" }}>
-          <BrandMark T={T} size={28} /><span style={{ fontFamily: f.sora, fontWeight: 800, fontSize: 15, color: T.text }}>PROPHETX</span>
+          <BrandMark size={28} />
           <span style={{ fontFamily: f.mono, fontSize: 9, color: T.textDim, letterSpacing: "0.12em", textTransform: "uppercase" }}>Marketing</span>
         </div>
         <h1 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(24px, 3.8vw, 50px)", color: T.text, margin: 0, lineHeight: 1.05, letterSpacing: "-0.04em", position: "relative" }}>
@@ -490,19 +470,19 @@ const REPORTING_SLIDES = [
   function RepKPIs({ T }) {
     return (
       <Slide>
-        <div><Label T={T}>Performance Snapshot</Label><H1 T={T}>Headline numbers — <span style={{ color: T.accent }}>week ending [date].</span></H1><Sub T={T}>Replace subtitle — add context on the period, comparison baseline, and any notable conditions.</Sub></div>
+        <div><Label T={T}>Performance Snapshot</Label><H1 T={T}>Headline numbers — <span style={{ color: T.accent }}>week ending [date].</span></H1><Sub T={T}>Replace subtitle with period context and comparison baseline.</Sub></div>
         <div style={{ display: "flex", gap: 10 }}>
           {[{ v: "0,000", l: "Primary KPI", c: T.accent }, { v: "+0%", l: "vs Prior Period", c: T.accent }, { v: "0.0%", l: "Conversion Rate", c: T.second }, { v: "$0K", l: "Pipeline / Value", c: T.yellow }].map((s, i) => <StatBox key={i} T={T} value={s.v} label={s.l} color={s.c} />)}
         </div>
         <div style={{ display: "flex", gap: 10 }}>
-          {[{ label: "On Track", color: T.accent, note: "Replace with what's performing above target — be specific." }, { label: "Watch", color: T.yellow, note: "Replace with what needs attention — include magnitude of deviation." }, { label: "Action Needed", color: T.red, note: "Replace with what's underperforming — include proposed fix." }].map(f2 => (
+          {[{ label: "On Track", color: T.accent, note: "Replace with what's performing above target." }, { label: "Watch", color: T.yellow, note: "Replace with what needs attention." }, { label: "Action Needed", color: T.red, note: "Replace with what's underperforming." }].map(f2 => (
             <Card T={T} key={f2.label} style={{ flex: 1, borderLeft: `3px solid ${f2.color}` }}>
               <div style={{ fontFamily: f.mono, fontSize: 9, color: f2.color, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>{f2.label}</div>
               <div style={{ fontFamily: f.sora, fontSize: 12, color: T.textMid, lineHeight: 1.4 }}>{f2.note}</div>
             </Card>
           ))}
         </div>
-        <Banner T={T}>Replace with the single most important insight from this week's data — not a summary, an insight.</Banner>
+        <Banner T={T}>Replace with the single most important insight from this week's data.</Banner>
       </Slide>
     );
   },
@@ -515,7 +495,7 @@ const REPORTING_SLIDES = [
     ];
     return (
       <Slide>
-        <div><Label T={T}>Channel Breakdown</Label><H1 T={T}>Where the <span style={{ color: T.accent }}>volume is coming from.</span></H1><Sub T={T}>Replace with a sentence framing what the channel mix tells us this period.</Sub></div>
+        <div><Label T={T}>Channel Breakdown</Label><H1 T={T}>Where the <span style={{ color: T.accent }}>volume is coming from.</span></H1><Sub T={T}>Replace with a sentence framing what the channel mix tells us.</Sub></div>
         <div style={{ display: "flex", gap: 12 }}>
           <Card T={T} style={{ flex: 2 }}>
             <div style={{ fontFamily: f.mono, fontSize: 9, color: T.textDim, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>Volume by channel</div>
@@ -526,12 +506,12 @@ const REPORTING_SLIDES = [
               <Card T={T} key={i} style={{ flex: 1 }}>
                 <div style={{ fontFamily: f.mono, fontSize: 9, color: d.color, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 3 }}>{d.label}</div>
                 <div style={{ fontFamily: f.sora, fontWeight: 800, fontSize: 20, color: T.text, lineHeight: 1 }}>{d.display}</div>
-                <div style={{ fontFamily: f.sora, fontSize: 11, color: T.textDim, marginTop: 2 }}>Replace with delta vs prior period</div>
+                <div style={{ fontFamily: f.sora, fontSize: 11, color: T.textDim, marginTop: 2 }}>Replace with delta</div>
               </Card>
             ))}
           </div>
         </div>
-        <Banner T={T}>Replace with the channel-level insight — which is over/under-indexing and what it means.</Banner>
+        <Banner T={T}>Replace with the channel-level insight.</Banner>
       </Slide>
     );
   },
@@ -539,9 +519,8 @@ const REPORTING_SLIDES = [
     const items = [
       { label: "Initiative / Campaign 1", status: "green", owner: "Owner", note: "On track — replace with specific status note." },
       { label: "Initiative / Campaign 2", status: "green", owner: "Owner", note: "On track — replace with specific status note." },
-      { label: "Initiative / Campaign 3", status: "amber", owner: "Owner", note: "At risk — replace with what's causing the risk and mitigation." },
-      { label: "Initiative / Campaign 4", status: "amber", owner: "Owner", note: "At risk — replace with what's causing the risk and mitigation." },
-      { label: "Initiative / Campaign 5", status: "red", owner: "Owner", note: "Off track — replace with what's broken and what action is taken." },
+      { label: "Initiative / Campaign 3", status: "amber", owner: "Owner", note: "At risk — replace with risk and mitigation." },
+      { label: "Initiative / Campaign 4", status: "red", owner: "Owner", note: "Off track — replace with what's broken and action taken." },
     ];
     const colors = { green: T.accent, amber: T.yellow, red: T.red };
     const labels = { green: "On Track", amber: "At Risk", red: "Off Track" };
@@ -562,7 +541,7 @@ const REPORTING_SLIDES = [
             </div>
           ))}
         </div>
-        <Banner T={T}>Replace with a summary of overall initiative health and the one thing that needs a decision this week.</Banner>
+        <Banner T={T}>Replace with overall health summary and the one thing needing a decision this week.</Banner>
       </Slide>
     );
   },
@@ -585,7 +564,7 @@ const REPORTING_SLIDES = [
         </div>
         <div style={{ display: "flex", gap: 10 }}>
           <div style={{ flex: 1, background: T.accentDim, border: `1px solid ${T.accent}28`, borderRadius: 10, padding: "12px 16px", display: "flex", gap: 10, alignItems: "center" }}>
-            <BrandMark T={T} size={20} />
+            <BrandMark size={20} />
             <div><div style={{ fontFamily: f.sora, fontWeight: 600, fontSize: 12, color: T.text }}>Prepared by {DECK.presenter}</div><div style={{ fontFamily: f.mono, fontSize: 10, color: T.textDim }}>{DECK.contact}</div></div>
           </div>
           <div style={{ flex: 2, background: T.accent, borderRadius: 10, padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -596,27 +575,22 @@ const REPORTING_SLIDES = [
     );
   },
 ];
-
 const REPORTING_LABELS = ["Title", "KPIs", "Channels", "RAG Status", "Actions"];
 
-// ╔══════════════════════════════════════════════════════════════╗
-// ║  FORMAT 3: SCROLL DOC                                      ║
-// ╚══════════════════════════════════════════════════════════════╝
-
+// ── SCROLL SECTIONS ──────────────────────────────────────────
 const SCROLL_SECTIONS = [
   { label: "Overview", content: function ScrollOverview({ T }) {
     return (
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "60px 0 40px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 28 }}>
-          <BrandMark T={T} size={24} />
-          <span style={{ fontFamily: f.sora, fontWeight: 800, fontSize: 14, color: T.text }}>PROPHETX</span>
+          <BrandMark size={24} />
           <span style={{ fontFamily: f.mono, fontSize: 9, color: T.textDim, letterSpacing: "0.12em", textTransform: "uppercase" }}>Marketing</span>
         </div>
         <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 14 }}>Document Overview</div>
         <h1 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(28px, 4vw, 52px)", color: T.text, margin: 0, lineHeight: 1.05, letterSpacing: "-0.04em", marginBottom: 16 }}>
           {DECK.title}<br /><span style={{ color: T.accent }}>— {DECK.topic}</span>
         </h1>
-        <p style={{ fontFamily: f.sora, fontWeight: 300, fontSize: 17, color: T.textMid, lineHeight: 1.7, marginBottom: 28 }}>{DECK.subtitle} Replace this with a fuller introduction paragraph — one to three sentences that orient the reader on what they're about to read and why it matters.</p>
+        <p style={{ fontFamily: f.sora, fontWeight: 300, fontSize: 17, color: T.textMid, lineHeight: 1.7, marginBottom: 28 }}>{DECK.subtitle} Replace this with a fuller introduction paragraph.</p>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 32 }}>
           <Tag T={T}>Scroll Document</Tag><Tag T={T} color={T.second}>{DECK.topic}</Tag><Tag T={T} color={T.yellow}>{DECK.date}</Tag>
         </div>
@@ -636,9 +610,8 @@ const SCROLL_SECTIONS = [
     return (
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 0" }}>
         <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 12 }}>01 — Context & Background</div>
-        <h2 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(22px, 3vw, 36px)", color: T.text, margin: "0 0 16px", letterSpacing: "-0.03em", lineHeight: 1.1 }}>Replace with the context headline — what situation are we describing?</h2>
-        <p style={{ fontFamily: f.sora, fontSize: 15, color: T.textMid, lineHeight: 1.8, marginBottom: 20 }}>Replace this paragraph with background context. This should orient the reader on the situation — what was happening, what the conditions were, and why this document exists. Write in plain, direct prose. Avoid bullet points here; this section should read like a brief.</p>
-        <p style={{ fontFamily: f.sora, fontSize: 15, color: T.textMid, lineHeight: 1.8, marginBottom: 28 }}>Add a second paragraph if needed. Use this space to establish any key terms, constraints, or assumptions the reader needs before moving into findings.</p>
+        <h2 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(22px, 3vw, 36px)", color: T.text, margin: "0 0 16px", letterSpacing: "-0.03em", lineHeight: 1.1 }}>Replace with the context headline.</h2>
+        <p style={{ fontFamily: f.sora, fontSize: 15, color: T.textMid, lineHeight: 1.8, marginBottom: 20 }}>Replace this paragraph with background context. Orient the reader on the situation — what was happening, what the conditions were, and why this document exists.</p>
         <div style={{ padding: "16px 20px", background: T.accentDim, borderLeft: `3px solid ${T.accent}`, borderRadius: "0 8px 8px 0", marginBottom: 24 }}>
           <div style={{ fontFamily: f.mono, fontSize: 9, color: T.accent, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>Key Assumption</div>
           <div style={{ fontFamily: f.sora, fontSize: 14, color: T.text, lineHeight: 1.5 }}>Replace with a key assumption or constraint that underpins everything that follows.</div>
@@ -658,9 +631,9 @@ const SCROLL_SECTIONS = [
     return (
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 0" }}>
         <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 12 }}>02 — Key Findings</div>
-        <h2 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(22px, 3vw, 36px)", color: T.text, margin: "0 0 16px", letterSpacing: "-0.03em", lineHeight: 1.1 }}>Replace with the findings headline — what did we learn?</h2>
-        <p style={{ fontFamily: f.sora, fontSize: 15, color: T.textMid, lineHeight: 1.8, marginBottom: 24 }}>Replace with a brief intro to the findings — set up what the reader is about to see and why these are the most important takeaways from the data or research.</p>
-        {[{ n: "01", title: "Finding one headline", body: "Replace with a full description of this finding. Write in prose — explain what you found, what the data shows, and what it means. One to two sentences of context followed by the specific insight." }, { n: "02", title: "Finding two headline", body: "Replace with a full description of this finding. Include relevant data points inline, like 'conversion rate dropped from 4.2% to 3.1% over the period, driven primarily by mobile underperformance.'" }, { n: "03", title: "Finding three headline", body: "Replace with a full description of this finding. If there's a nuance or caveat to this finding, include it here — readers of scroll docs expect more depth than slide decks." }].map(f2 => (
+        <h2 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(22px, 3vw, 36px)", color: T.text, margin: "0 0 16px", letterSpacing: "-0.03em", lineHeight: 1.1 }}>Replace with the findings headline.</h2>
+        <p style={{ fontFamily: f.sora, fontSize: 15, color: T.textMid, lineHeight: 1.8, marginBottom: 24 }}>Replace with a brief intro to the findings.</p>
+        {[{ n: "01", title: "Finding one headline", body: "Replace with a full description of this finding. Write in prose — explain what you found, what the data shows, and what it means." }, { n: "02", title: "Finding two headline", body: "Replace with a full description of this finding. Include relevant data points inline." }, { n: "03", title: "Finding three headline", body: "Replace with a full description of this finding. Include any nuance or caveats." }].map(f2 => (
           <div key={f2.n} style={{ marginBottom: 20, padding: "20px 22px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 12 }}>
             <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
               <div style={{ fontFamily: f.sora, fontWeight: 800, fontSize: 24, color: T.accent, lineHeight: 1, minWidth: 32, flexShrink: 0 }}>{f2.n}</div>
@@ -676,17 +649,16 @@ const SCROLL_SECTIONS = [
   }},
   { label: "Timeline", content: function ScrollTimeline({ T }) {
     const events = [
-      { date: "Date / Period", title: "Event or milestone title", desc: "Replace with a description of what happened at this point — what was decided, launched, or discovered. Keep it to one to two sentences." },
-      { date: "Date / Period", title: "Event or milestone title", desc: "Replace with event description. This format works well for project timelines, campaign histories, or decision logs." },
-      { date: "Date / Period", title: "Event or milestone title", desc: "Replace with event description. Use past tense for completed events, present tense for current status, future tense for planned items." },
+      { date: "Date / Period", title: "Event or milestone title", desc: "Replace with a description of what happened at this point." },
+      { date: "Date / Period", title: "Event or milestone title", desc: "Replace with event description." },
       { date: "Date / Period", title: "Event or milestone title", desc: "Replace with event description." },
       { date: "Date / Period", title: "Planned — Future milestone", desc: "Replace with what's coming next and what it depends on." },
     ];
     return (
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 0" }}>
         <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 12 }}>03 — Timeline</div>
-        <h2 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(22px, 3vw, 36px)", color: T.text, margin: "0 0 16px", letterSpacing: "-0.03em", lineHeight: 1.1 }}>Replace with timeline headline — what arc does this cover?</h2>
-        <p style={{ fontFamily: f.sora, fontSize: 15, color: T.textMid, lineHeight: 1.8, marginBottom: 28 }}>Replace with a brief intro — describe what period this timeline covers and what the key inflection points are.</p>
+        <h2 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(22px, 3vw, 36px)", color: T.text, margin: "0 0 16px", letterSpacing: "-0.03em", lineHeight: 1.1 }}>Replace with timeline headline.</h2>
+        <p style={{ fontFamily: f.sora, fontSize: 15, color: T.textMid, lineHeight: 1.8, marginBottom: 28 }}>Replace with a brief intro describing the period this timeline covers.</p>
         <div style={{ position: "relative" }}>
           <div style={{ position: "absolute", left: 72, top: 0, bottom: 0, width: 1, background: T.border }} />
           {events.map((e, i) => (
@@ -697,7 +669,7 @@ const SCROLL_SECTIONS = [
               <div style={{ width: 16, flexShrink: 0, display: "flex", justifyContent: "center", paddingTop: 2 }}>
                 <div style={{ width: 9, height: 9, borderRadius: "50%", background: T.accent, border: `2px solid ${T.bg}`, zIndex: 1 }} />
               </div>
-              <div style={{ flex: 1, paddingBottom: 20, borderBottom: i < events.length - 1 ? "none" : "none" }}>
+              <div style={{ flex: 1, paddingBottom: 20 }}>
                 <div style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 14, color: T.text, marginBottom: 4 }}>{e.title}</div>
                 <div style={{ fontFamily: f.sora, fontSize: 13, color: T.textMid, lineHeight: 1.6 }}>{e.desc}</div>
               </div>
@@ -712,8 +684,8 @@ const SCROLL_SECTIONS = [
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 0" }}>
         <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 12 }}>04 — Recommendations</div>
         <h2 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(22px, 3vw, 36px)", color: T.text, margin: "0 0 16px", letterSpacing: "-0.03em", lineHeight: 1.1 }}>Replace with recommendations headline.</h2>
-        <p style={{ fontFamily: f.sora, fontSize: 15, color: T.textMid, lineHeight: 1.8, marginBottom: 24 }}>Replace with a brief framing paragraph — explain the basis for these recommendations and how they connect to the findings above.</p>
-        {[{ n: "01", priority: "High", title: "Recommendation one", rationale: "Replace with rationale — why this, why now, what it addresses.", action: "Replace with the specific action required." }, { n: "02", priority: "High", title: "Recommendation two", rationale: "Replace with rationale.", action: "Replace with the specific action required." }, { n: "03", priority: "Medium", title: "Recommendation three", rationale: "Replace with rationale.", action: "Replace with the specific action required." }].map((r, i) => (
+        <p style={{ fontFamily: f.sora, fontSize: 15, color: T.textMid, lineHeight: 1.8, marginBottom: 24 }}>Replace with a brief framing paragraph explaining the basis for these recommendations.</p>
+        {[{ n: "01", priority: "High", title: "Recommendation one", rationale: "Replace with rationale.", action: "Replace with the specific action required." }, { n: "02", priority: "High", title: "Recommendation two", rationale: "Replace with rationale.", action: "Replace with the specific action required." }, { n: "03", priority: "Medium", title: "Recommendation three", rationale: "Replace with rationale.", action: "Replace with the specific action required." }].map((r, i) => (
           <div key={i} style={{ marginBottom: 16, padding: "20px 22px", background: T.card, border: `1px solid ${T.border}`, borderLeft: `3px solid ${T.accent}`, borderRadius: "0 12px 12px 0" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
               <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
@@ -733,11 +705,11 @@ const SCROLL_SECTIONS = [
     return (
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 0 80px" }}>
         <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 12 }}>05 — Closing</div>
-        <h2 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(22px, 3vw, 36px)", color: T.text, margin: "0 0 16px", letterSpacing: "-0.03em", lineHeight: 1.1 }}>Replace with a closing headline — the "so what" in one line.</h2>
-        <p style={{ fontFamily: f.sora, fontSize: 15, color: T.textMid, lineHeight: 1.8, marginBottom: 28 }}>Replace with a closing paragraph — summarise the key message of the whole document in three to five sentences. Don't introduce new information; bring everything together and make the path forward clear.</p>
+        <h2 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(22px, 3vw, 36px)", color: T.text, margin: "0 0 16px", letterSpacing: "-0.03em", lineHeight: 1.1 }}>Replace with a closing headline.</h2>
+        <p style={{ fontFamily: f.sora, fontSize: 15, color: T.textMid, lineHeight: 1.8, marginBottom: 28 }}>Replace with a closing paragraph — summarise the key message and make the path forward clear.</p>
         <div style={{ padding: "20px 22px", background: T.accentDim, border: `1px solid ${T.accent}28`, borderRadius: 12, marginBottom: 24 }}>
           <div style={{ fontFamily: f.mono, fontSize: 9, color: T.accent, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Next Steps</div>
-          {["Replace with first next step — specific, ownable, time-bound.", "Replace with second next step.", "Replace with third next step."].map((s, i) => (
+          {["Replace with first next step.", "Replace with second next step.", "Replace with third next step."].map((s, i) => (
             <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: i < 2 ? 8 : 0 }}>
               <Pip T={T} />
               <div style={{ fontFamily: f.sora, fontSize: 14, color: T.text, lineHeight: 1.5 }}>{s}</div>
@@ -747,7 +719,7 @@ const SCROLL_SECTIONS = [
         <div style={{ height: 1, background: T.border, marginBottom: 24 }} />
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <BrandMark T={T} size={22} />
+            <BrandMark size={22} />
             <div>
               <div style={{ fontFamily: f.sora, fontWeight: 600, fontSize: 13, color: T.text }}>{DECK.presenter}</div>
               <div style={{ fontFamily: f.mono, fontSize: 10, color: T.textDim }}>{DECK.contact}</div>
@@ -760,10 +732,7 @@ const SCROLL_SECTIONS = [
   }},
 ];
 
-// ╔══════════════════════════════════════════════════════════════╗
-// ║  NAV ENGINE — DO NOT MODIFY                                ║
-// ╚══════════════════════════════════════════════════════════════╝
-
+// ── NAV ENGINE ───────────────────────────────────────────────
 export default function MasterTemplate() {
   const [theme, setTheme] = useState("lightB");
   const [format, setFormat] = useState("proposal");
@@ -772,7 +741,6 @@ export default function MasterTemplate() {
   const [exiting, setExiting] = useState(false);
   const [dir, setDir] = useState(1);
   const [touch, setTouch] = useState(null);
-  const scrollRef = useRef(null);
   const T = THEMES[theme];
 
   const slides = format === "proposal" ? PROPOSAL_SLIDES : format === "reporting" ? REPORTING_SLIDES : null;
@@ -799,8 +767,6 @@ export default function MasterTemplate() {
   }, [go, isScroll]);
 
   const switchFormat = (f) => { setFormat(f); setSlideIdx(0); };
-  const switchTheme = (t) => setTheme(t);
-
   const onTouchStart = (e) => setTouch(e.targetTouches[0].clientX);
   const onTouchEnd = (e) => {
     if (!touch || isScroll) return;
@@ -810,25 +776,8 @@ export default function MasterTemplate() {
   };
 
   const SlideComp = !isScroll && slides ? slides[slideIdx] : null;
-
-  const controlBar = (
-    <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: 44, background: isScroll ? T.bg : T.bg, borderBottom: `1px solid ${T.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 18px", zIndex: 100, backdropFilter: "blur(8px)" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <Wordmark size={14} color={T.text === "#F0F8FF" ? "white" : "#1B2242"} />
-        <span style={{ fontFamily: f.mono, fontSize: 8, color: T.textDim, letterSpacing: "0.1em", textTransform: "uppercase", borderLeft: `1px solid ${T.border}`, paddingLeft: 8 }}>Templates</span>
-      </div>
-      <div style={{ display: "flex", gap: 4 }}>
-        {Object.values(FORMATS).map(fm => (
-          <button key={fm.id} onClick={() => switchFormat(fm.id)} style={{ fontFamily: f.mono, fontSize: 9, padding: "4px 9px", borderRadius: 5, border: `1px solid ${format === fm.id ? T.accent : T.border}`, background: format === fm.id ? T.accentDim : "transparent", color: format === fm.id ? T.accent : T.textDim, cursor: "pointer", letterSpacing: "0.06em", fontWeight: format === fm.id ? 700 : 400 }}>{fm.icon} {fm.label}</button>
-        ))}
-      </div>
-      <div style={{ display: "flex", gap: 4 }}>
-        {Object.values(THEMES).map(th => (
-          <button key={th.id} onClick={() => switchTheme(th.id)} style={{ fontFamily: f.mono, fontSize: 9, padding: "4px 9px", borderRadius: 5, border: `1px solid ${theme === th.id ? T.accent : T.border}`, background: theme === th.id ? T.accent : "transparent", color: theme === th.id ? T.onAccent : T.textDim, cursor: "pointer", letterSpacing: "0.06em", fontWeight: theme === th.id ? 700 : 400 }}>{th.label}</button>
-        ))}
-      </div>
-    </div>
-  );
+  const isDark = theme === "dark";
+  const wordmarkColor = isDark ? "white" : "#1B2242";
 
   return (
     <>
@@ -840,26 +789,32 @@ export default function MasterTemplate() {
         @keyframes sOut { from { opacity:1; transform:translateX(0);     } to { opacity:0; transform:translateX(-48px); } }
         @keyframes sInR { from { opacity:0; transform:translateX(-48px); } to { opacity:1; transform:translateX(0); } }
         @keyframes sOutR{ from { opacity:1; transform:translateX(0);     } to { opacity:0; transform:translateX(48px); } }
-        button { transition: all 0.15s ease; }
-        button:hover { opacity: 0.85; transform: translateY(-1px); }
-        ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: ${T.surface}; } ::-webkit-scrollbar-thumb { background: ${T.border}; border-radius: 2px; }
+        button { transition: all 0.15s ease; } button:hover { opacity: 0.85; }
+        ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-thumb { background: ${T.border}; border-radius: 2px; }
       `}</style>
-
       <div style={{ width: "100vw", minHeight: "100vh", background: T.bg, transition: "background 0.3s ease" }} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-        {controlBar}
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: `radial-gradient(ellipse at 12% 45%, ${T.accentGlow} 0%, transparent 50%), radial-gradient(ellipse at 88% 75%, ${T.second}08 0%, transparent 45%)`, zIndex: 0 }} />
 
-        {/* Background glow */}
-        <div style={{ position: "fixed", inset: 0, pointerEvents: "none", background: `radial-gradient(ellipse at 12% 45%, ${T.accentGlow} 0%, transparent 50%), radial-gradient(ellipse at 88% 75%, ${T.second}08 0%, transparent 45%)`, zIndex: 0 }} />
+        {/* Control bar */}
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: 44, background: T.bg, borderBottom: `1px solid ${T.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 18px", zIndex: 100 }}>
+          <Wordmark size={13} color={wordmarkColor} />
+          <div style={{ display: "flex", gap: 4 }}>
+            {Object.values(FORMATS).map(fm => (
+              <button key={fm.id} onClick={() => switchFormat(fm.id)} style={{ fontFamily: f.mono, fontSize: 9, padding: "4px 9px", borderRadius: 5, border: `1px solid ${format === fm.id ? T.accent : T.border}`, background: format === fm.id ? T.accentDim : "transparent", color: format === fm.id ? T.accent : T.textDim, cursor: "pointer", letterSpacing: "0.06em", fontWeight: format === fm.id ? 700 : 400 }}>{fm.icon} {fm.label}</button>
+            ))}
+          </div>
+          <div style={{ display: "flex", gap: 4 }}>
+            {Object.values(THEMES).map(th => (
+              <button key={th.id} onClick={() => setTheme(th.id)} style={{ fontFamily: f.mono, fontSize: 9, padding: "4px 9px", borderRadius: 5, border: `1px solid ${theme === th.id ? T.accent : T.border}`, background: theme === th.id ? T.accent : "transparent", color: theme === th.id ? T.onAccent : T.textDim, cursor: "pointer", letterSpacing: "0.07em", fontWeight: theme === th.id ? 700 : 400 }}>{th.label}</button>
+            ))}
+          </div>
+        </div>
 
         {isScroll ? (
           <div style={{ position: "relative", zIndex: 1, paddingTop: 44, paddingLeft: "clamp(20px, 5vw, 60px)", paddingRight: "clamp(20px, 5vw, 60px)" }}>
             {SCROLL_SECTIONS.map((sec, i) => {
               const Comp = sec.content;
-              return (
-                <div key={i} style={{ borderBottom: i < SCROLL_SECTIONS.length - 1 ? `1px solid ${T.border}` : "none" }}>
-                  <Comp T={T} />
-                </div>
-              );
+              return <div key={i} style={{ borderBottom: i < SCROLL_SECTIONS.length - 1 ? `1px solid ${T.border}` : "none" }}><Comp T={T} /></div>;
             })}
           </div>
         ) : (
@@ -868,12 +823,12 @@ export default function MasterTemplate() {
               {SlideComp && <SlideComp T={T} />}
             </div>
             {slideIdx > 0 && <button onClick={() => go(-1)} style={{ position: "fixed", left: 12, top: "50%", transform: "translateY(-50%)", background: `${T.card}ee`, border: `1px solid ${T.border}`, color: T.textMid, borderRadius: 7, width: 30, height: 30, fontSize: 16, cursor: "pointer", zIndex: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>‹</button>}
-            {slideIdx < slides.length - 1 && <button onClick={() => go(1)} style={{ position: "fixed", right: 12, top: "50%", transform: "translateY(-50%)", background: `${T.card}ee`, border: `1px solid ${T.border}`, color: T.textMid, borderRadius: 7, width: 30, height: 30, fontSize: 16, cursor: "pointer", zIndex: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>›</button>}
+            {slides && slideIdx < slides.length - 1 && <button onClick={() => go(1)} style={{ position: "fixed", right: 12, top: "50%", transform: "translateY(-50%)", background: `${T.card}ee`, border: `1px solid ${T.border}`, color: T.textMid, borderRadius: 7, width: 30, height: 30, fontSize: 16, cursor: "pointer", zIndex: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>›</button>}
             <div style={{ position: "fixed", bottom: 8, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 8, zIndex: 20, alignItems: "center" }}>
               {labels.map((lbl, i) => (
                 <div key={i} onClick={() => { setDir(i > slideIdx ? 1 : -1); setSlideIdx(i); }} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, cursor: "pointer" }}>
-                  <div style={{ fontFamily: f.mono, fontSize: 8, color: i === slideIdx ? T.accent : `${T.textDim}55`, textTransform: "uppercase", letterSpacing: "0.04em" }}>{lbl}</div>
-                  <div style={{ width: i === slideIdx ? 16 : 5, height: 4, borderRadius: 2, background: i === slideIdx ? T.accent : `${T.textDim}28`, transition: "all 0.3s ease" }} />
+                  <div style={{ fontFamily: f.mono, fontSize: 8, color: i === slideIdx ? T.accent : `${T.textDim}55`, letterSpacing: "0.05em", textTransform: "uppercase" }}>{lbl}</div>
+                  <div style={{ width: i === slideIdx ? 18 : 5, height: 4, borderRadius: 2, background: i === slideIdx ? T.accent : `${T.textDim}30`, transition: "all 0.3s ease" }} />
                 </div>
               ))}
             </div>
