@@ -169,6 +169,45 @@ function Slide1({ T }) {
 }
 
 function Slide2({ T }) {
+  const problems = [
+    {
+      icon: "⏱",
+      color: T.accent,
+      title: "Output vs. Capacity",
+      desc: "Performance marketing demands are growing faster than any team can scale. Reporting, analysis, documentation, creative iteration, and strategic planning all compete for the same finite hours. Something always gets deprioritised.",
+    },
+    {
+      icon: "🧠",
+      color: T.second,
+      title: "Knowledge Fragmentation",
+      desc: "Institutional knowledge lives in people's heads, scattered across Slack threads, spreadsheets, and outdated docs. When context isn't codified, every new campaign starts from scratch and every team member re-invents the wheel.",
+    },
+    {
+      icon: "🔁",
+      color: T.yellow,
+      title: "Manual, Repetitive Work",
+      desc: "A significant portion of marketing time goes to tasks that follow predictable patterns — weekly reports, creative briefs, budget summaries, post-mortems. Work that should take minutes takes hours because no system exists to do it faster.",
+    },
+  ];
+  return (
+    <Sl T={T}>
+      <div><Lbl T={T} text="Why This Matters" /><H1 T={T}>More expected. Same hours. <span style={{ color: T.accent }}>Same headcount.</span></H1></div>
+      <div style={{ display: "flex", gap: 14 }}>
+        {problems.map((p, i) => (
+          <div key={i} style={{ flex: 1, background: `linear-gradient(145deg, ${p.color}12, ${p.color}04)`, border: `1px solid ${p.color}25`, borderRadius: 14, padding: "22px 20px", display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ fontSize: 24 }}>{p.icon}</div>
+            <div style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 15, color: T.text }}>{p.title}</div>
+            <div style={{ width: 28, height: 3, background: p.color, borderRadius: 2 }} />
+            <div style={{ fontFamily: f.sora, fontSize: 13, color: T.textMid, lineHeight: 1.6, flex: 1 }}>{p.desc}</div>
+          </div>
+        ))}
+      </div>
+      <Banner T={T}>These aren't talent problems. They're systems problems. AI solves systems problems.</Banner>
+    </Sl>
+  );
+}
+
+function Slide2b({ T }) {
   return (
     <Sl T={T}>
       <div><Lbl T={T} text="Foundation" /><H1 T={T}>Before the show &amp; tell — <span style={{ color: T.accent }}>here's how Claude works.</span></H1></div>
@@ -191,7 +230,7 @@ function Slide2({ T }) {
   );
 }
 
-function Slide3({ T }) {
+({ T }) {
   return (
     <Sl T={T}>
       <div><Lbl T={T} text="What's Been Built" /><H1 T={T}>One tool. Built from scratch. <span style={{ color: T.accent }}>Live today.</span></H1></div>
@@ -652,8 +691,8 @@ function Slide10({ T }) {
 }
 
 // ── NAV ENGINE ────────────────────────────────────────────────
-const MAIN_SLIDES = [Slide0, Slide1, Slide2, Slide3, Slide4, Slide5, Slide6, Slide7, Slide8, Slide9, Slide10];
-const MAIN_LABELS = ["Title", "Agenda", "Foundation", "Built", "Vision", "System", "Channel", "Team", "Mission", "Timeline", "Closing"];
+const MAIN_SLIDES = [Slide0, Slide1, Slide2, Slide2b, Slide3, Slide4, Slide5, Slide6, Slide7, Slide8, Slide9, Slide10];
+const MAIN_LABELS = ["Title", "Agenda", "Problem", "Foundation", "Built", "Vision", "System", "Channel", "Team", "Mission", "Timeline", "Closing"];
 const SYSTEM_SLIDE_IDX = 5;
 
 function Presentation() {
