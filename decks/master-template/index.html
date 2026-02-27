@@ -8,24 +8,43 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   </head>
-  <body style="margin:0;padding:0;background:#FFFFFF;">
+  <body style="margin:0;padding:0;">
     <div id="root"></div>
     <script type="text/babel">
 const { useState, useEffect, useCallback } = React;
 
 const fonts = `@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');`;
 
-const T = {
-  bg: "#FFFFFF", surface: "#F1F8FC", card: "#E8F4FA",
-  accent: "#00B884", accentDim: "#00B88422", accentGlow: "#00B8840F",
-  second: "#6366F1", red: "#EF4444", yellow: "#F59E0B",
-  text: "#060E18", textDim: "#94A3B8", textMid: "#334155",
-  border: "#BAD8EA", onAccent: "#FFFFFF",
+const THEMES = {
+  lightB: {
+    id: "lightB", label: "LIGHT",
+    bg: "#FFFFFF", surface: "#F1F8FC", card: "#E8F4FA",
+    accent: "#00B884", accentDim: "#00B88422", accentGlow: "#00B8840F",
+    second: "#6366F1", red: "#EF4444", yellow: "#F59E0B",
+    text: "#060E18", textDim: "#94A3B8", textMid: "#334155",
+    border: "#BAD8EA", onAccent: "#FFFFFF",
+  },
+  dark: {
+    id: "dark", label: "DARK",
+    bg: "#0A1520", surface: "#0F1E2E", card: "#152535",
+    accent: "#00C896", accentDim: "#00C89628", accentGlow: "#00C89614",
+    second: "#0EA5E9", red: "#FF4D4D", yellow: "#F59E0B",
+    text: "#F0F8FF", textDim: "#4A6580", textMid: "#7A9AB5",
+    border: "#1A3045", onAccent: "#0A1520",
+  },
+  dynamic: {
+    id: "dynamic", label: "ALT",
+    bg: "#F2F6FA", surface: "#0A1520", card: "#FFFFFF",
+    accent: "#00E5AA", accentDim: "#00E5AA22", accentGlow: "#00E5AA10",
+    second: "#F0B429", red: "#FF4458", yellow: "#F0B429",
+    text: "#0A1520", textDim: "#94A3B8", textMid: "#475569",
+    border: "#CBD5E1", onAccent: "#0A1520",
+  },
 };
 
 const f = { sora: "'Sora', sans-serif", mono: "'JetBrains Mono', monospace" };
 
-function BrandMark({ size = 26 }) {
+function BrandMark({ T, size = 26 }) {
   const w = size * (169 / 105);
   const id = "bm" + Math.random().toString(36).substr(2, 5);
   return (
@@ -48,8 +67,9 @@ function BrandMark({ size = 26 }) {
   );
 }
 
-function Wordmark({ size = 15, color = "#060E18" }) {
+function Wordmark({ T, size = 15 }) {
   const id = "wm" + Math.random().toString(36).substr(2, 5);
+  const color = T.text;
   return (
     <svg width={size * 8.86} height={size} viewBox="0 0 886 100" fill="none" style={{ flexShrink: 0 }}>
       <defs>
@@ -71,23 +91,25 @@ function Wordmark({ size = 15, color = "#060E18" }) {
   );
 }
 
-const lbl = (text, color) => <div style={{ fontFamily: f.mono, fontSize: 10, color: color || T.accent, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 8 }}>{text}</div>;
-const H1 = ({ children }) => <h1 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(20px, 3vw, 42px)", lineHeight: 1.1, color: T.text, margin: 0, letterSpacing: "-0.03em" }}>{children}</h1>;
-const Sub = ({ children }) => <p style={{ fontFamily: f.sora, fontWeight: 300, fontSize: "clamp(13px, 1.4vw, 17px)", color: T.textMid, margin: "8px 0 0", lineHeight: 1.6 }}>{children}</p>;
-const Card = ({ children, style = {} }) => <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: "16px 18px", ...style }}>{children}</div>;
-const Banner = ({ children, solid }) => solid
+const Lbl = ({ T, text, color }) => <div style={{ fontFamily: f.mono, fontSize: 10, color: color || T.accent, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 8 }}>{text}</div>;
+const H1 = ({ T, children }) => <h1 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(20px, 3vw, 42px)", lineHeight: 1.1, color: T.text, margin: 0, letterSpacing: "-0.03em" }}>{children}</h1>;
+const Sub = ({ T, children }) => <p style={{ fontFamily: f.sora, fontWeight: 300, fontSize: "clamp(13px, 1.4vw, 17px)", color: T.textMid, margin: "8px 0 0", lineHeight: 1.6 }}>{children}</p>;
+const Card = ({ T, children, style = {} }) => <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: "16px 18px", ...style }}>{children}</div>;
+const Banner = ({ T, children, solid }) => solid
   ? <div style={{ padding: "11px 22px", background: T.accent, borderRadius: 10, fontFamily: f.sora, fontWeight: 700, fontSize: 13, color: T.onAccent, textAlign: "center" }}>{children}</div>
   : <div style={{ padding: "12px 16px", background: `linear-gradient(90deg, ${T.accentGlow}, transparent)`, borderLeft: `3px solid ${T.accent}`, borderRadius: "0 8px 8px 0", fontFamily: f.sora, fontSize: 13, color: T.text, lineHeight: 1.5 }}>{children}</div>;
-const Tag = ({ children, color }) => { const c = color || T.accent; return <span style={{ fontFamily: f.mono, fontSize: 10, color: c, background: c + "18", border: `1px solid ${c}28`, borderRadius: 5, padding: "3px 9px", letterSpacing: "0.05em" }}>{children}</span>; };
-const Pip = ({ color }) => <div style={{ width: 5, height: 5, borderRadius: "50%", background: color || T.accent, flexShrink: 0, marginTop: 5 }} />;
-const Slide = ({ children, style = {} }) => <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", height: "100%", padding: "0 clamp(22px, 5vw, 72px)", gap: 20, ...style }}>{children}</div>;
+const Tag = ({ T, children, color }) => { const c = color || T.accent; return <span style={{ fontFamily: f.mono, fontSize: 10, color: c, background: c + "18", border: `1px solid ${c}28`, borderRadius: 5, padding: "3px 9px", letterSpacing: "0.05em" }}>{children}</span>; };
+const Pip = ({ T, color }) => <div style={{ width: 5, height: 5, borderRadius: "50%", background: color || T.accent, flexShrink: 0, marginTop: 5 }} />;
+const Sl = ({ T, children, style = {} }) => <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", height: "100%", padding: "0 clamp(22px, 5vw, 72px)", gap: 20, ...style }}>{children}</div>;
 
-function Slide0() {
+// ── SLIDES ────────────────────────────────────────────────────
+
+function Slide0({ T }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "100%", textAlign: "center", padding: "0 clamp(32px, 7vw, 120px)", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "38%", left: "50%", width: 560, height: 360, background: `radial-gradient(ellipse, ${T.accentGlow} 0%, transparent 65%)`, transform: "translate(-50%,-50%)", pointerEvents: "none" }} />
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 32, position: "relative" }}>
-        <BrandMark size={28} />
+        <BrandMark T={T} size={28} />
         <span style={{ fontFamily: f.mono, fontSize: 9, color: T.textDim, letterSpacing: "0.12em", textTransform: "uppercase" }}>Marketing</span>
       </div>
       <h1 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(28px, 4.5vw, 58px)", color: T.text, margin: 0, lineHeight: 1.05, letterSpacing: "-0.04em", position: "relative" }}>
@@ -97,9 +119,9 @@ function Slide0() {
         Using Claude to 4x marketing output, systematise performance operations, and build a blueprint for the whole team.
       </p>
       <div style={{ marginTop: 24, display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center", position: "relative" }}>
-        <Tag>Show &amp; Tell</Tag>
-        <Tag color={T.second}>February 2026</Tag>
-        <Tag color={T.yellow}>Performance Marketing</Tag>
+        <Tag T={T}>Show &amp; Tell</Tag>
+        <Tag T={T} color={T.second}>February 2026</Tag>
+        <Tag T={T} color={T.yellow}>Performance Marketing</Tag>
       </div>
       <div style={{ marginTop: 28, display: "flex", flexDirection: "column", alignItems: "center", gap: 12, position: "relative" }}>
         <div style={{ width: 80, height: 1, background: `linear-gradient(90deg, transparent, ${T.textDim}50, transparent)` }} />
@@ -109,7 +131,7 @@ function Slide0() {
   );
 }
 
-function Slide1() {
+function Slide1({ T }) {
   const items = [
     { n: "01", text: "What's been built — Claude skills & projects already live" },
     { n: "02", text: "The tool itself — this deck was built with AI" },
@@ -118,8 +140,8 @@ function Slide1() {
     { n: "05", text: "The mission & timeline — building the plane while we fly it" },
   ];
   return (
-    <Slide>
-      <div>{lbl("Agenda")}<H1>Today's <span style={{ color: T.accent }}>agenda.</span></H1></div>
+    <Sl T={T}>
+      <div><Lbl T={T} text="Agenda" /><H1 T={T}>Today's <span style={{ color: T.accent }}>agenda.</span></H1></div>
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {items.map(item => (
           <div key={item.n} style={{ display: "flex", gap: 16, alignItems: "center", padding: "14px 18px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 12 }}>
@@ -128,14 +150,14 @@ function Slide1() {
           </div>
         ))}
       </div>
-    </Slide>
+    </Sl>
   );
 }
 
-function Slide2() {
+function Slide2({ T }) {
   return (
-    <Slide>
-      <div>{lbl("Foundation")}<H1>Before the show &amp; tell — <span style={{ color: T.accent }}>here's how Claude works.</span></H1></div>
+    <Sl T={T}>
+      <div><Lbl T={T} text="Foundation" /><H1 T={T}>Before the show &amp; tell — <span style={{ color: T.accent }}>here's how Claude works.</span></H1></div>
       <div style={{ display: "flex", gap: 14 }}>
         <div style={{ flex: 1, background: `linear-gradient(145deg, ${T.accent}12, ${T.accent}04)`, border: `1px solid ${T.accent}25`, borderRadius: 14, padding: "22px 20px", display: "flex", flexDirection: "column", gap: 12 }}>
           <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, textTransform: "uppercase", letterSpacing: "0.1em" }}>Skills (.md files)</div>
@@ -150,15 +172,15 @@ function Slide2() {
           <div style={{ fontFamily: f.sora, fontSize: 13, color: T.textMid, lineHeight: 1.6 }}>Workspaces where skills, templates, and context live together. Every teammate with access inherits the same setup — same brand, same outputs, same quality bar.</div>
         </div>
       </div>
-      <Banner>The building blocks are already in place. Here's what's been built with them.</Banner>
-    </Slide>
+      <Banner T={T}>The building blocks are already in place. Here's what's been built with them.</Banner>
+    </Sl>
   );
 }
 
-function Slide3() {
+function Slide3({ T }) {
   return (
-    <Slide>
-      <div>{lbl("What's Been Built")}<H1>One tool. Built from scratch. <span style={{ color: T.accent }}>Live today.</span></H1></div>
+    <Sl T={T}>
+      <div><Lbl T={T} text="What's Been Built" /><H1 T={T}>One tool. Built from scratch. <span style={{ color: T.accent }}>Live today.</span></H1></div>
       <div style={{ display: "flex", gap: 10 }}>
         {[
           { v: "~3 hrs", l: "To build the system", c: T.accent },
@@ -168,60 +190,45 @@ function Slide3() {
           { v: "3 themes", l: "Dark · Light · Alt", c: T.text },
         ].map((s, i) => (
           <div key={i} style={{ flex: 1, textAlign: "center", padding: "16px 10px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 12 }}>
-            <div style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(16px, 2.2vw, 28px)", color: s.c, lineHeight: 1, letterSpacing: "-0.03em" }}>{s.v}</div>
-            <div style={{ fontFamily: f.mono, fontSize: 10, color: T.textDim, marginTop: 6, textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.l}</div>
+            <div style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(14px, 2vw, 26px)", color: s.c, lineHeight: 1, letterSpacing: "-0.03em" }}>{s.v}</div>
+            <div style={{ fontFamily: f.mono, fontSize: 9, color: T.textDim, marginTop: 6, textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.l}</div>
           </div>
         ))}
       </div>
       <div style={{ display: "flex", gap: 12 }}>
-        <Card style={{ flex: 1 }}>
+        <Card T={T} style={{ flex: 1 }}>
           <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>The system includes</div>
           {["Proposal, Reporting & Scroll Doc formats", "Dark, Light & Alt theme variants", "ProphetX logo & wordmark (official SVG paths)", "Keyboard, swipe & dot navigation", "URL hash routing — every slide is linkable", "Branded closing credits per presenter"].map((t, i) => (
             <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 6 }}>
-              <Pip color={T.accent} />
+              <Pip T={T} color={T.accent} />
               <div style={{ fontFamily: f.sora, fontSize: 12, color: T.textMid }}>{t}</div>
             </div>
           ))}
         </Card>
-        <Card style={{ flex: 1 }}>
+        <Card T={T} style={{ flex: 1 }}>
           <div style={{ fontFamily: f.mono, fontSize: 10, color: T.second, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>The infrastructure includes</div>
           {["GitHub repository for version control", "Vercel deployment — live URL, auto-deploys on push", "Monday.com artifact library — every build logged automatically", "Shareable URL — no downloads, no PowerPoint", "GitHub/Vercel setup (genuinely hard — lots of back and forth)"].map((t, i) => (
             <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 6 }}>
-              <Pip color={T.second} />
+              <Pip T={T} color={T.second} />
               <div style={{ fontFamily: f.sora, fontSize: 12, color: T.textMid }}>{t}</div>
             </div>
           ))}
         </Card>
       </div>
-      <Banner>~3 hours to build the system. ~15 minutes to build this deck. That's the point.</Banner>
-    </Slide>
+      <Banner T={T}>~3 hours to build the system. ~15 minutes to build this deck. That's the point.</Banner>
+    </Sl>
   );
 }
 
-function Slide4() {
+function Slide4({ T }) {
   return (
-    <Slide>
-      <div>{lbl("The Vision")}<H1>This is the MVP. Here's what it <span style={{ color: T.accent }}>grows into.</span></H1></div>
+    <Sl T={T}>
+      <div><Lbl T={T} text="The Vision" /><H1 T={T}>This is the MVP. Here's what it <span style={{ color: T.accent }}>grows into.</span></H1></div>
       <div style={{ display: "flex", gap: 14 }}>
         {[
-          {
-            icon: "◈",
-            color: T.accent,
-            name: "Self-Service Publishing",
-            desc: "Any team member opens a form, fills in text and data, selects a theme, previews AI-generated narrative, and hits publish. A unique URL is generated automatically. No code. No GitHub. No Claude required."
-          },
-          {
-            icon: "◉",
-            color: T.second,
-            name: "Live Data Connections",
-            desc: "Reporting decks pull directly from Smartly, Monday.com, and attribution tools. Charts and stats auto-populate. Claude surfaces insights before the deck is even opened."
-          },
-          {
-            icon: "◎",
-            color: T.yellow,
-            name: "A Deck Library",
-            desc: "Every published deck lives in a searchable internal library — filterable by format, theme, creator, and date. One URL for the whole team's output."
-          },
+          { icon: "◈", color: T.accent, name: "Self-Service Publishing", desc: "Any team member opens a form, fills in text and data, selects a theme, previews AI-generated narrative, and hits publish. A unique URL is generated automatically. No code. No GitHub. No Claude required." },
+          { icon: "◉", color: T.second, name: "Live Data Connections", desc: "Reporting decks pull directly from Smartly, Monday.com, and attribution tools. Charts and stats auto-populate. Claude surfaces insights before the deck is even opened." },
+          { icon: "◎", color: T.yellow, name: "A Deck Library", desc: "Every published deck lives in a searchable internal library — filterable by format, theme, creator, and date. One URL for the whole team's output." },
         ].map((card, i) => (
           <div key={i} style={{ flex: 1, background: `linear-gradient(155deg, ${card.color}12, ${card.color}04)`, border: `1px solid ${card.color}25`, borderRadius: 14, padding: "22px 18px", display: "flex", flexDirection: "column", gap: 12 }}>
             <div style={{ fontFamily: f.sora, fontSize: 24, color: card.color }}>{card.icon}</div>
@@ -231,48 +238,67 @@ function Slide4() {
           </div>
         ))}
       </div>
-      <Banner>What took ~3 hours to build as an MVP would take a few focused weeks to turn into a full publishing platform. The foundation is already here.</Banner>
-    </Slide>
+      <Banner T={T}>What took ~3 hours to build as an MVP would take a few focused weeks to turn into a full publishing platform. The foundation is already here.</Banner>
+    </Sl>
   );
 }
 
-function Slide5() {
-  const themes = [
-    { name: "Dark", bg: "#0A1520", card: "#152535", accent: "#00C896", text: "#F0F8FF", border: "#1A3045", desc: "Internal reporting, data-heavy decks." },
-    { name: "Light", bg: "#FFFFFF", card: "#E8F4FA", accent: "#00B884", text: "#060E18", border: "#BAD8EA", desc: "External decks, proposals, leadership." },
-    { name: "Alt", bg: "#F2F6FA", card: "#FFFFFF", accent: "#00E5AA", text: "#0A1520", border: "#CBD5E1", desc: "Split panels, high-impact presentations.", second: "#F0B429" },
-  ];
+// SLIDE 5 — LIVE THEME DEMO
+function Slide5({ T, theme, setTheme }) {
   const formats = [
     { icon: "◈", name: "Proposal", desc: "Pitch, strategy, business case" },
     { icon: "◉", name: "Reporting", desc: "Weekly data, RAG status, KPIs" },
     { icon: "◎", name: "Scroll Doc", desc: "Timeline, playbook, deep-dive" },
   ];
   return (
-    <Slide>
-      <div>{lbl("The System")}<H1>One system. Three formats. Three themes. <span style={{ color: T.accent }}>Infinitely reusable.</span></H1></div>
-      <div style={{ display: "flex", gap: 10 }}>
-        {themes.map((th, i) => (
-          <div key={i} style={{ flex: 1, background: th.bg, border: `1px solid ${th.border}`, borderRadius: 14, padding: "18px 16px", display: "flex", flexDirection: "column", gap: 10, minHeight: 150 }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <div style={{ fontFamily: f.mono, fontSize: 10, color: th.accent, textTransform: "uppercase", letterSpacing: "0.12em" }}>{th.name}</div>
-              <div style={{ display: "flex", gap: 4 }}>
-                <div style={{ width: 10, height: 10, borderRadius: "50%", background: th.accent }} />
-                {th.second && <div style={{ width: 10, height: 10, borderRadius: "50%", background: th.second }} />}
-              </div>
-            </div>
-            <div style={{ flex: 1, background: th.card, borderRadius: 8, padding: "10px 12px" }}>
-              <div style={{ height: 6, borderRadius: 3, background: th.accent, marginBottom: 6, width: "60%" }} />
-              <div style={{ height: 4, borderRadius: 2, background: th.border, marginBottom: 4, width: "90%" }} />
-              <div style={{ height: 4, borderRadius: 2, background: th.border, width: "75%" }} />
-            </div>
-            <div style={{ fontFamily: f.sora, fontSize: 11, color: th.text === "#F0F8FF" ? "rgba(240,248,255,0.6)" : "rgba(6,14,24,0.5)", lineHeight: 1.4 }}>{th.desc}</div>
-          </div>
-        ))}
+    <Sl T={T}>
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 20 }}>
+        <div style={{ flex: 1 }}>
+          <Lbl T={T} text="The System — Live Demo" />
+          <H1 T={T}>One system. Three formats. Three themes. <span style={{ color: T.accent }}>Switch live.</span></H1>
+          <Sub T={T}>Tap a theme below to see the entire presentation update in real time.</Sub>
+        </div>
       </div>
+
+      {/* LIVE THEME SWITCHER */}
+      <div style={{ display: "flex", gap: 10 }}>
+        {Object.values(THEMES).map(th => {
+          const active = theme === th.id;
+          return (
+            <button key={th.id} onClick={() => setTheme(th.id)} style={{
+              flex: 1, padding: "16px 14px", borderRadius: 14, cursor: "pointer",
+              border: `2px solid ${active ? T.accent : T.border}`,
+              background: active ? T.accentDim : T.card,
+              display: "flex", flexDirection: "column", gap: 10,
+              transition: "all 0.25s ease", transform: active ? "translateY(-2px)" : "none",
+              boxShadow: active ? `0 4px 20px ${T.accent}30` : "none",
+            }}>
+              {/* Mini slide preview */}
+              <div style={{ width: "100%", aspectRatio: "16/9", background: th.bg, borderRadius: 8, padding: "8px", border: `1px solid ${th.border}`, display: "flex", flexDirection: "column", gap: 4 }}>
+                <div style={{ height: 5, borderRadius: 2, background: th.accent, width: "45%" }} />
+                <div style={{ height: 3, borderRadius: 2, background: th.border, width: "80%" }} />
+                <div style={{ height: 3, borderRadius: 2, background: th.border, width: "65%" }} />
+                <div style={{ flex: 1, display: "flex", gap: 3, marginTop: 2 }}>
+                  {[1,2,3].map(n => <div key={n} style={{ flex: 1, background: th.card, borderRadius: 4, border: `1px solid ${th.border}` }} />)}
+                </div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div style={{ fontFamily: f.mono, fontSize: 11, fontWeight: active ? 700 : 400, color: active ? T.accent : T.textDim, letterSpacing: "0.1em" }}>{th.label}</div>
+                <div style={{ display: "flex", gap: 3 }}>
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: th.accent }} />
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: th.second || th.border }} />
+                </div>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Formats */}
       <div style={{ display: "flex", gap: 10 }}>
         {formats.map((fmt, i) => (
           <div key={i} style={{ flex: 1, display: "flex", gap: 12, alignItems: "center", padding: "12px 16px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 10 }}>
-            <div style={{ fontFamily: f.sora, fontSize: 22, color: T.accent }}>{fmt.icon}</div>
+            <div style={{ fontFamily: f.sora, fontSize: 20, color: T.accent }}>{fmt.icon}</div>
             <div>
               <div style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 13, color: T.text, marginBottom: 2 }}>{fmt.name}</div>
               <div style={{ fontFamily: f.sora, fontSize: 11, color: T.textDim }}>{fmt.desc}</div>
@@ -280,12 +306,12 @@ function Slide5() {
           </div>
         ))}
       </div>
-      <Banner>Every future deck the team builds pulls from this same system. Consistent. On-brand. Fast.</Banner>
-    </Slide>
+      <Banner T={T}>Every future deck the team builds pulls from this same system. Consistent. On-brand. Fast.</Banner>
+    </Sl>
   );
 }
 
-function Slide6() {
+function Slide6({ T }) {
   const claudeItems = [
     { name: "Weekly creative reporting", desc: "Connected to Smartly — asset type, creator, theme & message breakdowns" },
     { name: "Marketing attribution framework", desc: "Complete source-level attribution model for every channel" },
@@ -301,10 +327,10 @@ function Slide6() {
     { name: "Claude + Canva", desc: "Static ads and additional brand resources for advertising" },
   ];
   return (
-    <Slide>
-      <div>{lbl("The Channel Roadmap")}<H1>A full AI stack for <span style={{ color: T.accent }}>performance marketing.</span></H1><Sub>Performance marketing is the proving ground. Everything built here gets refined into team-wide templates.</Sub></div>
+    <Sl T={T}>
+      <div><Lbl T={T} text="The Channel Roadmap" /><H1 T={T}>A full AI stack for <span style={{ color: T.accent }}>performance marketing.</span></H1><Sub T={T}>Performance marketing is the proving ground. Everything built here gets refined into team-wide templates.</Sub></div>
       <div style={{ display: "flex", gap: 12 }}>
-        <Card style={{ flex: 1 }}>
+        <Card T={T} style={{ flex: 1 }}>
           <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>Claude-Powered</div>
           {claudeItems.map((item, i) => (
             <div key={i} style={{ paddingBottom: 10, marginBottom: 10, borderBottom: i < claudeItems.length - 1 ? `1px solid ${T.border}` : "none" }}>
@@ -313,7 +339,7 @@ function Slide6() {
             </div>
           ))}
         </Card>
-        <Card style={{ flex: 1 }}>
+        <Card T={T} style={{ flex: 1 }}>
           <div style={{ fontFamily: f.mono, fontSize: 10, color: T.second, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>Non-Claude AI Tools</div>
           {aiItems.map((item, i) => (
             <div key={i} style={{ paddingBottom: 10, marginBottom: 10, borderBottom: i < aiItems.length - 1 ? `1px solid ${T.border}` : "none" }}>
@@ -323,11 +349,11 @@ function Slide6() {
           ))}
         </Card>
       </div>
-    </Slide>
+    </Sl>
   );
 }
 
-function Slide7() {
+function Slide7({ T }) {
   const items = [
     { icon: "📝", name: "Documentation & Confluence", desc: "Claude maintains SOPs, campaign briefs, and institutional knowledge. No more knowledge living in people's heads." },
     { icon: "📌", name: "Monday.com Project Management", desc: "Automated logging, status updates, and reporting directly from Claude conversations." },
@@ -336,8 +362,8 @@ function Slide7() {
     { icon: "🎨", name: "Brand Design Skill", desc: "Claude-assisted static ad creation via Canva and a fully functional brand book for agencies, partners, and creators." },
   ];
   return (
-    <Slide>
-      <div>{lbl("The Team Infrastructure")}<H1>Expanding the system across the <span style={{ color: T.accent }}>entire marketing team.</span></H1><Sub>What gets proven in performance marketing becomes the blueprint for the whole team.</Sub></div>
+    <Sl T={T}>
+      <div><Lbl T={T} text="The Team Infrastructure" /><H1 T={T}>Expanding the system across the <span style={{ color: T.accent }}>entire marketing team.</span></H1><Sub T={T}>What gets proven in performance marketing becomes the blueprint for the whole team.</Sub></div>
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {items.map((item, i) => (
           <div key={i} style={{ display: "flex", gap: 14, padding: "12px 16px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 10 }}>
@@ -349,14 +375,14 @@ function Slide7() {
           </div>
         ))}
       </div>
-    </Slide>
+    </Sl>
   );
 }
 
-function Slide8() {
+function Slide8({ T }) {
   return (
-    <Slide>
-      <div>{lbl("The Commitment")}<H1>Building the plane <span style={{ color: T.accent }}>while we fly it.</span></H1></div>
+    <Sl T={T}>
+      <div><Lbl T={T} text="The Commitment" /><H1 T={T}>Building the plane <span style={{ color: T.accent }}>while we fly it.</span></H1></div>
       <div style={{ padding: "16px 20px", background: T.accentDim, border: `1px solid ${T.accent}30`, borderRadius: 12 }}>
         <div style={{ fontFamily: f.sora, fontSize: 14, color: T.text, lineHeight: 1.7 }}>
           Leadership has set a clear mandate — AI isn't optional. The expectation is measurably more output, tighter operations, and a marketing team that's ahead of the curve on the tools shaping the industry.
@@ -368,40 +394,28 @@ function Slide8() {
           { n: "Concurrent", label: "Execution Model", desc: "AI infrastructure built alongside day-to-day work, not instead of it." },
           { n: "Prove → Scale", label: "The Approach", desc: "Proven in performance marketing first. Handed to the whole team when ready." },
         ].map((c, i) => (
-          <Card key={i} style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
+          <Card T={T} key={i} style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
             <div style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(18px, 2.2vw, 26px)", color: T.accent, lineHeight: 1 }}>{c.n}</div>
             <div style={{ fontFamily: f.mono, fontSize: 9, color: T.textDim, textTransform: "uppercase", letterSpacing: "0.1em" }}>{c.label}</div>
             <div style={{ fontFamily: f.sora, fontSize: 12, color: T.textMid, lineHeight: 1.5 }}>{c.desc}</div>
           </Card>
         ))}
       </div>
-      <Banner>The goal isn't to automate marketing. It's to make every marketer on this team exponentially more effective.</Banner>
-    </Slide>
+      <Banner T={T}>The goal isn't to automate marketing. It's to make every marketer on this team exponentially more effective.</Banner>
+    </Sl>
   );
 }
 
-function Slide9() {
+function Slide9({ T }) {
   const phases = [
-    {
-      label: "Now", color: T.accent, status: "Live",
-      items: ["Presentation system (3 formats, 3 themes, deployed)", "Creative reporting workflow", "Monday.com artifact library", "Campaign documentation system"],
-    },
-    {
-      label: "30 Days", color: T.second, status: "Next",
-      items: ["Creative reporting connected to Smartly", "Attribution framework v1", "Smartly PBA evaluation", "Creatify testing begins"],
-    },
-    {
-      label: "60 Days", color: T.yellow, status: "Building",
-      items: ["Cross-functional deck templates rolled out", "Confluence documentation system live", "Creative test planning repository", "Smartly AI ad creation in testing"],
-    },
-    {
-      label: "90 Days", color: "#94A3B8", status: "Vision",
-      items: ["Full team on Claude Enterprise", "Brand book v1 complete", "QBR & trading deck templates standardised", "Brand messaging hierarchy documented"],
-    },
+    { label: "Now", color: T.accent, status: "Live", items: ["Presentation system (3 formats, 3 themes, deployed)", "Creative reporting workflow", "Monday.com artifact library", "Campaign documentation system"] },
+    { label: "30 Days", color: T.second, status: "Next", items: ["Creative reporting connected to Smartly", "Attribution framework v1", "Smartly PBA evaluation", "Creatify testing begins"] },
+    { label: "60 Days", color: T.yellow, status: "Building", items: ["Cross-functional deck templates rolled out", "Confluence documentation system live", "Creative test planning repository", "Smartly AI ad creation in testing"] },
+    { label: "90 Days", color: T.textDim, status: "Vision", items: ["Full team on Claude Enterprise", "Brand book v1 complete", "QBR & trading deck templates standardised", "Brand messaging hierarchy documented"] },
   ];
   return (
-    <Slide>
-      <div>{lbl("The Roadmap")}<H1>From proof of concept to <span style={{ color: T.accent }}>team-wide infrastructure.</span></H1></div>
+    <Sl T={T}>
+      <div><Lbl T={T} text="The Roadmap" /><H1 T={T}>From proof of concept to <span style={{ color: T.accent }}>team-wide infrastructure.</span></H1></div>
       <div style={{ display: "flex", gap: 10 }}>
         {phases.map((ph, i) => (
           <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", gap: 0 }}>
@@ -413,7 +427,7 @@ function Slide9() {
             <div style={{ flex: 1, background: T.card, border: `1px solid ${T.border}`, borderLeft: `3px solid ${ph.color}`, borderRadius: "0 10px 10px 0", padding: "14px", display: "flex", flexDirection: "column", gap: 8 }}>
               {ph.items.map((item, j) => (
                 <div key={j} style={{ display: "flex", gap: 7, alignItems: "flex-start" }}>
-                  <Pip color={ph.color} />
+                  <Pip T={T} color={ph.color} />
                   <div style={{ fontFamily: f.sora, fontSize: 11, color: T.textMid, lineHeight: 1.4 }}>{item}</div>
                 </div>
               ))}
@@ -421,17 +435,17 @@ function Slide9() {
           </div>
         ))}
       </div>
-      <Banner solid>1 hour a day. 90 days. A fully systematised marketing operation.</Banner>
-    </Slide>
+      <Banner T={T} solid>1 hour a day. 90 days. A fully systematised marketing operation.</Banner>
+    </Sl>
   );
 }
 
-function Slide10() {
+function Slide10({ T }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "100%", textAlign: "center", padding: "0 clamp(32px, 7vw, 120px)", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "38%", left: "50%", width: 500, height: 340, background: `radial-gradient(ellipse, ${T.accentGlow} 0%, transparent 65%)`, transform: "translate(-50%,-50%)", pointerEvents: "none" }} />
       <div style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 20 }}>
-        <BrandMark size={48} />
+        <BrandMark T={T} size={48} />
         <h1 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(28px, 4vw, 52px)", color: T.text, margin: 0, lineHeight: 1.05, letterSpacing: "-0.04em" }}>
           The plane is <span style={{ color: T.accent }}>already in the air.</span>
         </h1>
@@ -452,6 +466,7 @@ function Slide10() {
   );
 }
 
+// ── NAV ENGINE ────────────────────────────────────────────────
 const SLIDES = [Slide0, Slide1, Slide2, Slide3, Slide4, Slide5, Slide6, Slide7, Slide8, Slide9, Slide10];
 const LABELS = ["Title", "Agenda", "Foundation", "Built", "Vision", "System", "Channel", "Team", "Mission", "Timeline", "Closing"];
 
@@ -463,10 +478,13 @@ function getSlideFromHash() {
 
 function Presentation() {
   const [cur, setCur] = useState(getSlideFromHash);
+  const [theme, setTheme] = useState("lightB");
   const [dir, setDir] = useState(1);
   const [animating, setAnimating] = useState(false);
   const [exiting, setExiting] = useState(false);
   const [touch, setTouch] = useState(null);
+
+  const T = THEMES[theme];
 
   useEffect(() => { window.location.hash = `#/${cur}`; }, [cur]);
 
@@ -502,31 +520,34 @@ function Presentation() {
       <style>{fonts}</style>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { overflow: hidden; background: ${T.bg}; }
+        body { overflow: hidden; background: ${T.bg}; transition: background 0.35s ease; }
         @keyframes sIn  { from { opacity:0; transform:translateX(48px);  } to { opacity:1; transform:translateX(0); } }
         @keyframes sOut { from { opacity:1; transform:translateX(0);     } to { opacity:0; transform:translateX(-48px); } }
         @keyframes sInR { from { opacity:0; transform:translateX(-48px); } to { opacity:1; transform:translateX(0); } }
         @keyframes sOutR{ from { opacity:1; transform:translateX(0);     } to { opacity:0; transform:translateX(48px); } }
-        button { transition: all 0.15s ease; } button:hover { opacity: 0.85; }
+        button { transition: all 0.2s ease; } button:hover { opacity: 0.9; }
       `}</style>
       <div onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}
-        style={{ width: "100vw", height: "100vh", background: T.bg, position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: `radial-gradient(ellipse at 12% 45%, ${T.accentGlow} 0%, transparent 50%)` }} />
+        style={{ width: "100vw", height: "100vh", background: T.bg, position: "relative", overflow: "hidden", transition: "background 0.35s ease" }}>
 
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 44, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 22px", zIndex: 20, borderBottom: `1px solid ${T.border}`, background: T.bg }}>
-          <Wordmark size={13} color={T.text} />
-          <div style={{ fontFamily: f.mono, fontSize: 11, color: T.textDim }}>
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: `radial-gradient(ellipse at 12% 45%, ${T.accentGlow} 0%, transparent 50%)`, transition: "background 0.35s ease" }} />
+
+        {/* Top bar */}
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 44, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 22px", zIndex: 20, borderBottom: `1px solid ${T.border}`, background: T.bg, transition: "background 0.35s ease, border-color 0.35s ease" }}>
+          <Wordmark T={T} size={13} />
+          <div style={{ fontFamily: f.mono, fontSize: 11, color: T.textDim, transition: "color 0.35s ease" }}>
             {LABELS[cur]} · {String(cur + 1).padStart(2, "0")} / {String(SLIDES.length).padStart(2, "0")}
           </div>
         </div>
 
-        <div key={cur} style={{
+        {/* Slide */}
+        <div key={`${theme}-${cur}`} style={{
           position: "absolute", inset: 0, paddingTop: 44, paddingBottom: 38,
           animation: exiting
             ? `${dir >= 0 ? "sOut" : "sOutR"} 0.27s ease forwards`
             : `${dir >= 0 ? "sIn" : "sInR"} 0.3s ease`,
         }}>
-          <SlideComp />
+          <SlideComp T={T} theme={theme} setTheme={setTheme} />
         </div>
 
         {cur > 0 && <button onClick={() => go(-1)} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", background: `${T.card}ee`, border: `1px solid ${T.border}`, color: T.textMid, borderRadius: 7, width: 30, height: 30, fontSize: 16, cursor: "pointer", zIndex: 10, display: "flex", alignItems: "center", justifyContent: "center" }}>‹</button>}
@@ -535,7 +556,7 @@ function Presentation() {
         <div style={{ position: "absolute", bottom: 8, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 8, zIndex: 10, alignItems: "center" }}>
           {SLIDES.map((_, i) => (
             <div key={i} onClick={() => { setDir(i > cur ? 1 : -1); setCur(i); }} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, cursor: "pointer" }}>
-              <div style={{ fontFamily: f.mono, fontSize: 8, color: i === cur ? T.accent : `${T.textDim}55`, letterSpacing: "0.05em", textTransform: "uppercase" }}>{LABELS[i]}</div>
+              <div style={{ fontFamily: f.mono, fontSize: 8, color: i === cur ? T.accent : `${T.textDim}55`, letterSpacing: "0.05em", textTransform: "uppercase", transition: "color 0.35s ease" }}>{LABELS[i]}</div>
               <div style={{ width: i === cur ? 18 : 5, height: 4, borderRadius: 2, background: i === cur ? T.accent : `${T.textDim}30`, transition: "all 0.3s ease" }} />
             </div>
           ))}
