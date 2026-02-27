@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ProphetX Marketing</title>
+    <title>ProphetX Marketing × AI</title>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -11,851 +11,513 @@
   <body style="margin:0;padding:0;background:#FFFFFF;">
     <div id="root"></div>
     <script type="text/babel">
-const { useState, useEffect, useCallback, useRef } = React;
+const { useState, useEffect, useCallback } = React;
 
 const fonts = `@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');`;
 
-const THEMES = {
-  dark: {
-    id: "dark", label: "DARK",
-    bg: "#0A1520", surface: "#0F1E2E", card: "#152535",
-    accent: "#00C896", accentDim: "#00C89628", accentGlow: "#00C89614",
-    second: "#0EA5E9", red: "#FF4D4D", yellow: "#F59E0B",
-    text: "#F0F8FF", textDim: "#4A6580", textMid: "#7A9AB5",
-    border: "#1A3045", onAccent: "#0A1520",
-  },
-  lightB: {
-    id: "lightB", label: "LIGHT",
-    bg: "#FFFFFF", surface: "#F1F8FC", card: "#E8F4FA",
-    accent: "#00B884", accentDim: "#00B88422", accentGlow: "#00B8840F",
-    second: "#6366F1", red: "#EF4444", yellow: "#F59E0B",
-    text: "#060E18", textDim: "#94A3B8", textMid: "#334155",
-    border: "#BAD8EA", onAccent: "#FFFFFF",
-  },
-  dynamic: {
-    id: "dynamic", label: "ALT",
-    bg: "#F2F6FA", surface: "#0A1520", card: "#FFFFFF",
-    accent: "#00E5AA", accentDim: "#00E5AA22", accentGlow: "#00E5AA10",
-    second: "#F0B429", red: "#FF4458", yellow: "#F0B429",
-    text: "#0A1520", textLight: "#EEF6FF",
-    textDim: "#94A3B8", textMid: "#475569",
-    textDimDark: "#3D5A74", textMidDark: "#7099B8",
-    border: "#CBD5E1", borderDark: "#1A3045",
-    onAccent: "#0A1520", splitMode: true,
-  },
-};
-
-const FORMATS = {
-  proposal:  { id: "proposal",  label: "PROPOSAL",  icon: "◈" },
-  reporting: { id: "reporting", label: "REPORTING",  icon: "◉" },
-  scroll:    { id: "scroll",    label: "SCROLL DOC", icon: "◎" },
-};
-
-const DECK = {
-  title: "Deck Title",
-  subtitle: "A short description of this deck and its purpose.",
-  presenter: "Presenter Name",
-  contact: "presenter@prophetx.co",
-  date: "March 2025",
-  topic: "Topic Area",
-  url: "prophetx-marketing-[deckname]",
+const T = {
+  bg: "#FFFFFF", surface: "#F1F8FC", card: "#E8F4FA",
+  accent: "#00B884", accentDim: "#00B88422", accentGlow: "#00B8840F",
+  second: "#6366F1", red: "#EF4444", yellow: "#F59E0B",
+  text: "#060E18", textDim: "#94A3B8", textMid: "#334155",
+  border: "#BAD8EA", onAccent: "#FFFFFF",
 };
 
 const f = { sora: "'Sora', sans-serif", mono: "'JetBrains Mono', monospace" };
 
-// ProphetX icon mark — official SVG paths
 function BrandMark({ size = 26 }) {
   const w = size * (169 / 105);
-  const h = size;
-  const id = Math.random().toString(36).substr(2, 6);
+  const id = "bm" + Math.random().toString(36).substr(2, 5);
   return (
-    <svg width={w} height={h} viewBox="0 0 169 105" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+    <svg width={w} height={size} viewBox="0 0 169 105" fill="none" style={{ flexShrink: 0 }}>
       <defs>
-        <linearGradient id={`bm_g0_${id}`} x1="132.891" y1="109.971" x2="31.7446" y2="8.8241" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#1DC29A"/><stop offset="0.1032" stopColor="#19BE9D"/>
-          <stop offset="0.6255" stopColor="#06ADAA"/><stop offset="1" stopColor="#00A7AF"/>
+        <linearGradient id={`${id}0`} x1="132.891" y1="109.971" x2="31.7446" y2="8.8241" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#1DC29A"/><stop offset="0.6255" stopColor="#06ADAA"/><stop offset="1" stopColor="#00A7AF"/>
         </linearGradient>
-        <linearGradient id={`bm_g1_${id}`} x1="79.5233" y1="52.5572" x2="-65.2089" y2="52.5572" gradientUnits="userSpaceOnUse">
+        <linearGradient id={`${id}1`} x1="79.5233" y1="52.5572" x2="-65.2089" y2="52.5572" gradientUnits="userSpaceOnUse">
           <stop stopColor="#1DC29A"/><stop offset="1" stopColor="#00A7AF"/>
         </linearGradient>
-        <linearGradient id={`bm_g2_${id}`} x1="26.0754" y1="2.10817" x2="98.5236" y2="43.9991" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#1DC29A"/><stop offset="0.3631" stopColor="#18BD9E"/>
-          <stop offset="0.802" stopColor="#09AFA8"/><stop offset="1" stopColor="#00A7AF"/>
+        <linearGradient id={`${id}2`} x1="26.0754" y1="2.10817" x2="98.5236" y2="43.9991" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#1DC29A"/><stop offset="0.802" stopColor="#09AFA8"/><stop offset="1" stopColor="#00A7AF"/>
         </linearGradient>
       </defs>
-      <path d="M79.5234 73.6005L100.056 104.656H138.201L104.959 54.5195L79.5234 73.6005Z" fill={`url(#bm_g0_${id})`}/>
-      <path d="M119.241 0.464844L123.153 6.2216L92.2171 29.4536L89.5351 31.4011L64.0995 50.4821L61.4004 52.5661L30.4643 75.6615L26.6891 69.9218L0.0234375 104.65H49.6648L45.8725 98.7739L76.8088 75.6615L79.5078 73.5945L104.943 54.5135L107.625 52.549L138.562 29.4536L142.354 35.1933L169.002 0.464844H119.241Z" fill={`url(#bm_g1_${id})`}/>
-      <path d="M30.8438 0.464844L64.1031 50.4821L89.5388 31.4011L68.8691 0.464844H30.8438Z" fill={`url(#bm_g2_${id})`}/>
+      <path d="M79.5234 73.6005L100.056 104.656H138.201L104.959 54.5195L79.5234 73.6005Z" fill={`url(#${id}0)`}/>
+      <path d="M119.241 0.464844L123.153 6.2216L92.2171 29.4536L89.5351 31.4011L64.0995 50.4821L61.4004 52.5661L30.4643 75.6615L26.6891 69.9218L0.0234375 104.65H49.6648L45.8725 98.7739L76.8088 75.6615L79.5078 73.5945L104.943 54.5135L107.625 52.549L138.562 29.4536L142.354 35.1933L169.002 0.464844H119.241Z" fill={`url(#${id}1)`}/>
+      <path d="M30.8438 0.464844L64.1031 50.4821L89.5388 31.4011L68.8691 0.464844H30.8438Z" fill={`url(#${id}2)`}/>
     </svg>
   );
 }
 
-function Wordmark({ size = 18, color = "white" }) {
-  const h = size;
-  const w = size * (886 / 100);
-  const id = Math.random().toString(36).substr(2, 6);
+function Wordmark({ size = 15, color = "#060E18" }) {
+  const id = "wm" + Math.random().toString(36).substr(2, 5);
   return (
-    <svg width={w} height={h} viewBox="0 0 886 100" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+    <svg width={size * 8.86} height={size} viewBox="0 0 886 100" fill="none" style={{ flexShrink: 0 }}>
       <defs>
-        <linearGradient id={`wm_g0_${id}`} x1="853.77" y1="100.796" x2="763.522" y2="10.5487" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#1DC29A"/><stop offset="0.1032" stopColor="#19BE9D"/>
-          <stop offset="0.6255" stopColor="#06ADAA"/><stop offset="1" stopColor="#00A7AF"/>
+        <linearGradient id={`${id}0`} x1="853.77" y1="100.796" x2="763.522" y2="10.5487" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#1DC29A"/><stop offset="0.6255" stopColor="#06ADAA"/><stop offset="1" stopColor="#00A7AF"/>
         </linearGradient>
-        <linearGradient id={`wm_g1_${id}`} x1="806.164" y1="49.573" x2="677.027" y2="49.573" gradientUnits="userSpaceOnUse">
+        <linearGradient id={`${id}1`} x1="806.164" y1="49.573" x2="677.027" y2="49.573" gradientUnits="userSpaceOnUse">
           <stop stopColor="#1DC29A"/><stop offset="1" stopColor="#00A7AF"/>
         </linearGradient>
-        <linearGradient id={`wm_g2_${id}`} x1="758.472" y1="4.56" x2="823.114" y2="41.9371" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#1DC29A"/><stop offset="0.3631" stopColor="#18BD9E"/>
-          <stop offset="0.802" stopColor="#09AFA8"/><stop offset="1" stopColor="#00A7AF"/>
+        <linearGradient id={`${id}2`} x1="758.472" y1="4.56" x2="823.114" y2="41.9371" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#1DC29A"/><stop offset="0.802" stopColor="#09AFA8"/><stop offset="1" stopColor="#00A7AF"/>
         </linearGradient>
       </defs>
       <path d="M112.758 31.1998C112.758 60.4181 90.8558 76.7877 63.0702 76.7877H36.9611L30.6511 96.038H0L30.3158 3.07881H77.3517C100.153 3.09405 112.758 11.1722 112.758 31.1998ZM81.3297 36.8544C81.3297 31.3217 78.2357 28.5477 70.813 28.5477H52.782L45.1459 51.6694L64.2895 51.5627C74.029 51.5627 81.3297 45.9233 81.3297 36.8544ZM196.664 66.1795L203.523 96.0532H174.091L168.893 72.1542H144.324L136.688 96.0532H106.037L135.91 3.09407H184.379C207.943 3.09407 219.343 12.0562 219.343 30.2091C219.359 46.914 209.513 59.3055 196.664 66.1795ZM151.64 49.688L172.887 49.5813C179.532 49.5813 188.159 45.2679 188.159 36.7477C188.159 30.5444 184.623 28.5629 177.429 28.5629H158.392L151.64 49.688ZM221.249 60.8601C221.249 28.7763 249.461 0 287.093 0C314.314 0 329.922 14.4949 329.922 38.2872C329.922 70.371 301.71 99.1473 264.078 99.1473C236.841 99.1473 221.249 84.6524 221.249 60.8601ZM299.362 43.1493C299.362 31.9771 291.513 26.4444 282.094 26.4444C263.941 26.4444 251.991 42.1586 251.778 55.9828C251.778 67.155 259.627 72.6877 269.047 72.6877C287.2 72.703 299.149 56.9887 299.362 43.1493ZM435.257 31.1998C435.257 60.4181 413.355 76.7877 385.57 76.7877H359.46L353.15 96.038H322.499L352.815 3.07881H399.851C422.637 3.09405 435.257 11.1722 435.257 31.1998ZM403.829 36.8544C403.829 31.3217 400.735 28.5477 393.312 28.5477H375.281L367.645 51.6694L386.789 51.5627C396.528 51.5627 403.829 45.9233 403.829 36.8544ZM554.265 3.09407L524.391 96.0532H493.74L504.257 63.5274H468.622L458.105 96.0532H427.454L457.327 3.09407H487.979L476.684 38.0585H512.32L523.614 3.09407H554.265ZM587.431 27.557L583.559 39.5065H636.677L630.26 59.0921H577.249L573.149 71.5903H626.48L618.509 96.038H534.633L564.629 3.07881H648.84L640.868 27.5418H587.431V27.557ZM746.966 28.6544H714.211L692.187 96.038H661.536L683.56 28.6544H650.028L658.213 3.09407H755.257L746.966 28.6544Z" fill={color}/>
-      <path d="M806.152 68.3453L824.473 96.0547H858.508L828.847 51.3203L806.152 68.3453Z" fill={`url(#wm_g0_${id})`}/>
-      <path d="M841.602 3.09375L845.093 8.2302L817.49 28.9589L815.097 30.6965L792.402 47.7215L789.994 49.581L762.391 70.1877L759.023 65.0665L735.23 96.0529H779.523L776.139 90.8098L803.742 70.1877L806.15 68.3435L828.845 51.3185L831.238 49.5657L858.841 28.9589L862.224 34.0801L886.001 3.09375H841.602Z" fill={`url(#wm_g1_${id})`}/>
-      <path d="M762.727 3.09375L792.402 47.7215L815.097 30.6965L796.655 3.09375H762.727Z" fill={`url(#wm_g2_${id})`}/>
+      <path d="M806.152 68.3453L824.473 96.0547H858.508L828.847 51.3203L806.152 68.3453Z" fill={`url(#${id}0)`}/>
+      <path d="M841.602 3.09375L845.093 8.2302L817.49 28.9589L815.097 30.6965L792.402 47.7215L789.994 49.581L762.391 70.1877L759.023 65.0665L735.23 96.0529H779.523L776.139 90.8098L803.742 70.1877L806.15 68.3435L828.845 51.3185L831.238 49.5657L858.841 28.9589L862.224 34.0801L886.001 3.09375H841.602Z" fill={`url(#${id}1)`}/>
+      <path d="M762.727 3.09375L792.402 47.7215L815.097 30.6965L796.655 3.09375H762.727Z" fill={`url(#${id}2)`}/>
     </svg>
   );
 }
 
-function Label({ T, children, color }) {
-  return <div style={{ fontFamily: f.mono, fontSize: 10, color: color || T.accent, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 8 }}>{children}</div>;
-}
+const lbl = (text, color) => (
+  <div style={{ fontFamily: f.mono, fontSize: 10, color: color || T.accent, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 8 }}>{text}</div>
+);
+const H1 = ({ children }) => <h1 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(20px, 3vw, 42px)", lineHeight: 1.1, color: T.text, margin: 0, letterSpacing: "-0.03em" }}>{children}</h1>;
+const Sub = ({ children }) => <p style={{ fontFamily: f.sora, fontWeight: 300, fontSize: "clamp(13px, 1.4vw, 17px)", color: T.textMid, margin: "8px 0 0", lineHeight: 1.6 }}>{children}</p>;
+const Card = ({ children, style = {} }) => <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: "16px 18px", ...style }}>{children}</div>;
+const Banner = ({ children, solid }) => solid
+  ? <div style={{ padding: "11px 22px", background: T.accent, borderRadius: 10, fontFamily: f.sora, fontWeight: 700, fontSize: 13, color: T.onAccent, textAlign: "center" }}>{children}</div>
+  : <div style={{ padding: "12px 16px", background: `linear-gradient(90deg, ${T.accentGlow}, transparent)`, borderLeft: `3px solid ${T.accent}`, borderRadius: "0 8px 8px 0", fontFamily: f.sora, fontSize: 13, color: T.text, lineHeight: 1.5 }}>{children}</div>;
+const Tag = ({ children, color }) => { const c = color || T.accent; return <span style={{ fontFamily: f.mono, fontSize: 10, color: c, background: c + "18", border: `1px solid ${c}28`, borderRadius: 5, padding: "3px 9px", letterSpacing: "0.05em" }}>{children}</span>; };
+const Pip = ({ color }) => <div style={{ width: 5, height: 5, borderRadius: "50%", background: color || T.accent, flexShrink: 0, marginTop: 5 }} />;
+const Slide = ({ children, style = {} }) => <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", height: "100%", padding: "0 clamp(22px, 5vw, 72px)", gap: 20, ...style }}>{children}</div>;
 
-function H1({ T, children }) {
-  return <h1 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(20px, 3vw, 42px)", lineHeight: 1.1, color: T.text, margin: 0, letterSpacing: "-0.03em" }}>{children}</h1>;
-}
+// ── SLIDES ────────────────────────────────────────────────────
 
-function Sub({ T, children }) {
-  return <p style={{ fontFamily: f.sora, fontWeight: 300, fontSize: "clamp(13px, 1.4vw, 17px)", color: T.textMid, margin: "8px 0 0", lineHeight: 1.6 }}>{children}</p>;
-}
-
-function Card({ T, children, style = {} }) {
-  return <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: "16px 18px", ...style }}>{children}</div>;
-}
-
-function Banner({ T, children, solid }) {
-  if (solid) return <div style={{ padding: "11px 22px", background: T.accent, borderRadius: 10, fontFamily: f.sora, fontWeight: 700, fontSize: 13, color: T.onAccent, textAlign: "center" }}>{children}</div>;
-  return <div style={{ padding: "12px 16px", background: `linear-gradient(90deg, ${T.accentGlow}, transparent)`, borderLeft: `3px solid ${T.accent}`, borderRadius: "0 8px 8px 0", fontFamily: f.sora, fontSize: 13, color: T.text, lineHeight: 1.5 }}>{children}</div>;
-}
-
-function Tag({ T, children, color }) {
-  const c = color || T.accent;
-  return <span style={{ fontFamily: f.mono, fontSize: 10, color: c, background: c + "18", border: `1px solid ${c}28`, borderRadius: 5, padding: "2px 8px", letterSpacing: "0.05em" }}>{children}</span>;
-}
-
-function Pip({ T, color }) {
-  return <div style={{ width: 5, height: 5, borderRadius: "50%", background: color || T.accent, flexShrink: 0, marginTop: 5 }} />;
-}
-
-function StatBox({ T, value, label, color }) {
+function Slide0() {
   return (
-    <div style={{ flex: 1, textAlign: "center", padding: "14px 10px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 12 }}>
-      <div style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(22px, 3vw, 40px)", color: color || T.accent, lineHeight: 1, letterSpacing: "-0.03em" }}>{value}</div>
-      <div style={{ fontFamily: f.mono, fontSize: 10, color: T.textDim, marginTop: 5, textTransform: "uppercase", letterSpacing: "0.08em" }}>{label}</div>
+    <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "100%", textAlign: "center", padding: "0 clamp(32px, 7vw, 120px)", position: "relative", overflow: "hidden" }}>
+      <div style={{ position: "absolute", top: "38%", left: "50%", width: 560, height: 360, background: `radial-gradient(ellipse, ${T.accentGlow} 0%, transparent 65%)`, transform: "translate(-50%,-50%)", pointerEvents: "none" }} />
+      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 32, position: "relative" }}>
+        <BrandMark size={28} />
+        <span style={{ fontFamily: f.mono, fontSize: 9, color: T.textDim, letterSpacing: "0.12em", textTransform: "uppercase" }}>Marketing</span>
+      </div>
+      <h1 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(28px, 4.5vw, 58px)", color: T.text, margin: 0, lineHeight: 1.05, letterSpacing: "-0.04em", position: "relative" }}>
+        ProphetX Marketing <span style={{ color: T.accent }}>× AI</span>
+      </h1>
+      <p style={{ fontFamily: f.sora, fontWeight: 300, fontSize: "clamp(14px, 1.6vw, 18px)", color: T.textMid, marginTop: 20, maxWidth: 580, lineHeight: 1.6, position: "relative" }}>
+        Using Claude to 4x marketing output, systematise performance operations, and build a blueprint for the whole team.
+      </p>
+      <div style={{ marginTop: 24, display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center", position: "relative" }}>
+        <Tag>Show &amp; Tell</Tag>
+        <Tag color={T.second}>February 2026</Tag>
+        <Tag color={T.yellow}>Performance Marketing</Tag>
+      </div>
+      <div style={{ marginTop: 28, display: "flex", flexDirection: "column", alignItems: "center", gap: 12, position: "relative" }}>
+        <div style={{ width: 80, height: 1, background: `linear-gradient(90deg, transparent, ${T.textDim}50, transparent)` }} />
+        <div style={{ fontFamily: f.mono, fontSize: 10, color: T.textDim }}>ProphetX Marketing · Jeff Donaldson</div>
+      </div>
     </div>
   );
 }
 
-function BarChart({ T, data }) {
-  const max = Math.max(...data.map(d => d.value));
+function Slide1() {
+  const items = [
+    { n: "01", text: "What's been built — Claude skills & projects already live" },
+    { n: "02", text: "The tool itself — this deck was built with AI" },
+    { n: "03", text: "Performance marketing — the channel roadmap" },
+    { n: "04", text: "Cross-functional marketing — the team infrastructure" },
+    { n: "05", text: "The mission & timeline — building the plane while we fly it" },
+  ];
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-      {data.map((d, i) => (
-        <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ fontFamily: f.sora, fontSize: 11, color: T.textMid, width: 100, flexShrink: 0, textAlign: "right" }}>{d.label}</div>
-          <div style={{ flex: 1, height: 8, background: T.border, borderRadius: 4, overflow: "hidden" }}>
-            <div style={{ width: `${(d.value / max) * 100}%`, height: "100%", background: d.color || T.accent, borderRadius: 4 }} />
+    <Slide>
+      <div>{lbl("Agenda")}<H1>Today's <span style={{ color: T.accent }}>agenda.</span></H1></div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {items.map(item => (
+          <div key={item.n} style={{ display: "flex", gap: 16, alignItems: "center", padding: "14px 18px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 12 }}>
+            <div style={{ fontFamily: f.sora, fontWeight: 800, fontSize: 24, color: T.accent, lineHeight: 1, minWidth: 36 }}>{item.n}</div>
+            <div style={{ fontFamily: f.sora, fontSize: 14, color: T.textMid, lineHeight: 1.4 }}>{item.text}</div>
           </div>
-          <div style={{ fontFamily: f.mono, fontSize: 10, color: T.textMid, width: 40, textAlign: "right" }}>{d.display || d.value}</div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </Slide>
   );
 }
 
-function Slide({ children, style = {} }) {
+function Slide2() {
   return (
-    <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", height: "100%", padding: "0 clamp(22px, 5vw, 72px)", gap: 20, ...style }}>
-      {children}
-    </div>
-  );
-}
-
-// ── PROPOSAL SLIDES ──────────────────────────────────────────
-const PROPOSAL_SLIDES = [
-  function PropTitle({ T }) {
-    return (
-      <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "100%", textAlign: "center", padding: "0 clamp(32px, 7vw, 120px)", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", top: "38%", left: "50%", width: 560, height: 360, background: `radial-gradient(ellipse, ${T.accentGlow} 0%, transparent 65%)`, transform: "translate(-50%,-50%)", pointerEvents: "none" }} />
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 32, position: "relative" }}>
-          <BrandMark size={28} />
-          <span style={{ fontFamily: f.mono, fontSize: 9, color: T.textDim, letterSpacing: "0.12em", textTransform: "uppercase" }}>Marketing</span>
+    <Slide>
+      <div>{lbl("Foundation")}<H1>Before the show &amp; tell — <span style={{ color: T.accent }}>here's how Claude works.</span></H1></div>
+      <div style={{ display: "flex", gap: 14 }}>
+        <div style={{ flex: 1, background: `linear-gradient(145deg, ${T.accent}12, ${T.accent}04)`, border: `1px solid ${T.accent}25`, borderRadius: 14, padding: "22px 20px", display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, textTransform: "uppercase", letterSpacing: "0.1em" }}>Skills (.md files)</div>
+          <div style={{ fontFamily: f.sora, fontWeight: 800, fontSize: 28, color: T.text, lineHeight: 1 }}>Job descriptions<br />for AI.</div>
+          <div style={{ width: 32, height: 3, background: T.accent, borderRadius: 2 }} />
+          <div style={{ fontFamily: f.sora, fontSize: 13, color: T.textMid, lineHeight: 1.6 }}>Instruction sets that define exactly how Claude behaves for a specific task. Upload once — persistent and consistent across every conversation.</div>
         </div>
-        <h1 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(26px, 4vw, 54px)", color: T.text, margin: 0, lineHeight: 1.05, letterSpacing: "-0.04em", position: "relative", maxWidth: 700 }}>
-          <span style={{ color: T.accent }}>{DECK.title.split(" ")[0]}</span> {DECK.title.split(" ").slice(1).join(" ")}
-        </h1>
-        <p style={{ fontFamily: f.sora, fontWeight: 300, fontSize: "clamp(13px, 1.5vw, 17px)", color: T.textMid, marginTop: 18, maxWidth: 520, lineHeight: 1.6, position: "relative" }}>{DECK.subtitle}</p>
-        <div style={{ marginTop: 30, display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center", position: "relative" }}>
-          <Tag T={T}>Proposal</Tag>
-          <Tag T={T} color={T.second}>{DECK.topic}</Tag>
-          <Tag T={T} color={T.yellow}>{DECK.date}</Tag>
-        </div>
-        <div style={{ marginTop: 28, display: "flex", flexDirection: "column", alignItems: "center", gap: 10, position: "relative" }}>
-          <div style={{ width: 60, height: 1, background: `linear-gradient(90deg, transparent, ${T.textDim}50, transparent)` }} />
-          <div style={{ fontFamily: f.mono, fontSize: 10, color: T.textDim }}>ProphetX Marketing · {DECK.date}</div>
+        <div style={{ flex: 1, background: `linear-gradient(145deg, ${T.second}12, ${T.second}04)`, border: `1px solid ${T.second}25`, borderRadius: 14, padding: "22px 20px", display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ fontFamily: f.mono, fontSize: 10, color: T.second, textTransform: "uppercase", letterSpacing: "0.1em" }}>Projects</div>
+          <div style={{ fontFamily: f.sora, fontWeight: 800, fontSize: 28, color: T.text, lineHeight: 1 }}>Shared AI<br />workspaces.</div>
+          <div style={{ width: 32, height: 3, background: T.second, borderRadius: 2 }} />
+          <div style={{ fontFamily: f.sora, fontSize: 13, color: T.textMid, lineHeight: 1.6 }}>Workspaces where skills, templates, and context live together. Every teammate with access inherits the same setup — same brand, same outputs, same quality bar.</div>
         </div>
       </div>
-    );
-  },
-  function PropSummary({ T }) {
-    const pts = [
-      { k: "Context", v: "Replace with your executive summary context — the situation, the background, the why." },
-      { k: "Proof", v: "Replace with evidence or existing work that validates the proposal." },
-      { k: "Vision", v: "Replace with the forward-looking outcome you're proposing." },
-      { k: "The Ask", v: "Replace with what you need — approval, budget, headcount, or time." },
-    ];
-    return (
-      <Slide>
-        <div><Label T={T}>Executive Summary</Label><H1 T={T}>The <span style={{ color: T.accent }}>TL;DR</span> — what this is and why it matters.</H1><Sub T={T}>Replace this subtitle with a single punchy sentence that captures the deck's thesis.</Sub></div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          {pts.map((p, i) => (
-            <div key={i} style={{ display: "flex", gap: 14, padding: "12px 16px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 10 }}>
-              <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, textTransform: "uppercase", letterSpacing: "0.1em", minWidth: 72, paddingTop: 1, flexShrink: 0 }}>{p.k}</div>
-              <div style={{ fontFamily: f.sora, fontSize: 13, color: T.textMid, lineHeight: 1.5 }}>{p.v}</div>
+      <Banner>5 live projects already built. Each one replaces a workflow that used to take hours.</Banner>
+    </Slide>
+  );
+}
+
+function Slide3() {
+  const projects = [
+    { icon: "🎨", name: "Presentation Builder", desc: "Branded, deployable slide decks built from bullet points. This deck is one of them.", tag: "Live", url: "prophetx-marketing-decks.vercel.app" },
+    { icon: "📊", name: "Creative Reporting", desc: "Weekly paid creative analysis by asset type, creator, theme, and message. Generated in minutes from raw data.", tag: "Live" },
+    { icon: "📋", name: "Campaign Documentation", desc: "SOPs, briefs, and post-mortems drafted and maintained by Claude. Knowledge that doesn't walk out the door.", tag: "Live" },
+    { icon: "⚡", name: "Performance Workflows", desc: "Budget pacing, anomaly flagging, campaign analysis. Surfaced automatically.", tag: "Live" },
+    { icon: "🔗", name: "Monday.com Integration", desc: "Every artifact Claude builds is automatically logged to a shared library board with links, descriptions, and ownership.", tag: "Live" },
+  ];
+  return (
+    <Slide>
+      <div>{lbl("Live Today")}<H1>Five Claude projects. One marketer. <span style={{ color: T.accent }}>Already running.</span></H1></div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {projects.map((p, i) => (
+          <div key={i} style={{ display: "flex", gap: 14, padding: "11px 16px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 10 }}>
+            <div style={{ fontSize: 20, minWidth: 28, flexShrink: 0 }}>{p.icon}</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
+                <span style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 13, color: T.text }}>{p.name}</span>
+                <Tag color={T.accent}>{p.tag}</Tag>
+                {p.url && <span style={{ fontFamily: f.mono, fontSize: 9, color: T.textDim }}>{p.url}</span>}
+              </div>
+              <div style={{ fontFamily: f.sora, fontSize: 12, color: T.textMid, lineHeight: 1.4 }}>{p.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Slide>
+  );
+}
+
+function Slide4() {
+  return (
+    <Slide>
+      <div>{lbl("Show & Tell")}<H1>This deck took <span style={{ color: T.accent }}>~3 hours</span> to build from scratch.</H1></div>
+      <div style={{ display: "flex", gap: 10 }}>
+        {[{ v: "~3 hrs", l: "Concept to live URL", c: T.accent }, { v: "0 lines", l: "Code written manually", c: T.second }, { v: "3 formats", l: "Proposal · Reporting · Scroll", c: T.yellow }].map((s, i) => (
+          <div key={i} style={{ flex: 1, textAlign: "center", padding: "16px 10px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 12 }}>
+            <div style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(20px, 2.8vw, 36px)", color: s.c, lineHeight: 1, letterSpacing: "-0.03em" }}>{s.v}</div>
+            <div style={{ fontFamily: f.mono, fontSize: 10, color: T.textDim, marginTop: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>{s.l}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ display: "flex", gap: 12 }}>
+        <Card style={{ flex: 1 }}>
+          <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>What Claude handled</div>
+          {["Full React app & brand design system", "3 colour themes (Dark, Light, Alt)", "Navigation engine — keyboard, swipe, dots", "ProphetX logo & wordmark integration", "Monday.com auto-logging on every build", "GitHub repository + Vercel deployment config"].map((t, i) => (
+            <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 6 }}>
+              <Pip color={T.accent} />
+              <div style={{ fontFamily: f.sora, fontSize: 12, color: T.textMid }}>{t}</div>
             </div>
           ))}
-        </div>
-        <Banner T={T}>Replace this banner with the single most important takeaway from this slide.</Banner>
-      </Slide>
-    );
-  },
-  function PropOpportunity({ T }) {
-    const without = ["Manual process 1 — describe the friction", "Manual process 2 — describe the friction", "Scaling output requires scaling headcount", "Knowledge lives in people's heads", "Slow feedback loops"];
-    const withIt = ["Automated version of process 1", "Automated version of process 2", "Scaling output = refining the system", "Knowledge codified and reusable", "Real-time insights surfaced automatically"];
-    return (
-      <Slide>
-        <div><Label T={T}>The Opportunity</Label><H1 T={T}>The problem is <span style={{ color: T.accent }}>real.</span> The solution is ready.</H1><Sub T={T}>Replace with a one-sentence framing of the opportunity and why now is the right time.</Sub></div>
-        <div style={{ display: "flex", gap: 12 }}>
-          {[{ label: "Without", items: without, color: T.red }, { label: "With", items: withIt, color: T.accent }].map(col => (
-            <div key={col.label} style={{ flex: 1, background: `linear-gradient(145deg, ${col.color}12, ${col.color}04)`, border: `1px solid ${col.color}25`, borderRadius: 12, padding: "18px 16px", display: "flex", flexDirection: "column", gap: 10 }}>
-              <div style={{ fontFamily: f.mono, fontSize: 10, color: col.color, textTransform: "uppercase", letterSpacing: "0.1em" }}>{col.label}</div>
-              {col.items.map((t, i) => (
-                <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-                  <Pip T={T} color={col.color} />
-                  <div style={{ fontFamily: f.sora, fontSize: 12, color: T.textMid, lineHeight: 1.4 }}>{t}</div>
-                </div>
-              ))}
+        </Card>
+        <Card style={{ flex: 1 }}>
+          <div style={{ fontFamily: f.mono, fontSize: 10, color: T.second, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>What took human effort</div>
+          {["Content direction & narrative decisions", "Brand feedback & theme approval", "GitHub repository setup & file structure", "Vercel deployment configuration (genuinely hard — lots of back and forth)", "Final sign-off before going live"].map((t, i) => (
+            <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 6 }}>
+              <Pip color={T.second} />
+              <div style={{ fontFamily: f.sora, fontSize: 12, color: T.textMid }}>{t}</div>
             </div>
           ))}
-        </div>
-        <Banner T={T}>Replace with the "so what" — the consequence of not acting, or the gain of acting now.</Banner>
-      </Slide>
-    );
-  },
-  function PropApproach({ T }) {
-    const items = [
-      { n: "01", icon: "◈", name: "Initiative One", desc: "Replace with a description of the first key initiative or pillar of your approach.", tag: "Live" },
-      { n: "02", icon: "◉", name: "Initiative Two", desc: "Replace with a description of the second initiative.", tag: "Live" },
-      { n: "03", icon: "◎", name: "Initiative Three", desc: "Replace with a description of the third initiative.", tag: "In Progress" },
-      { n: "04", icon: "◇", name: "Initiative Four", desc: "Replace with a description of the fourth initiative.", tag: "In Progress" },
-      { n: "05", icon: "○", name: "Initiative Five", desc: "Replace with a description of the fifth initiative.", tag: "Planned" },
-    ];
-    return (
-      <Slide>
-        <div><Label T={T}>The Approach</Label><H1 T={T}>Five initiatives. <span style={{ color: T.accent }}>One system.</span></H1><Sub T={T}>Replace subtitle — explain what makes this approach coherent as a system, not just a list.</Sub></div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-          {items.map(p => (
-            <div key={p.n} style={{ display: "flex", gap: 14, padding: "11px 16px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 10 }}>
-              <div style={{ fontFamily: f.sora, fontSize: 18, color: T.accent, minWidth: 24, flexShrink: 0 }}>{p.icon}</div>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
-                  <span style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 13, color: T.text }}>{p.name}</span>
-                  <Tag T={T} color={p.tag === "Live" ? T.accent : p.tag === "In Progress" ? T.yellow : T.textDim}>{p.tag}</Tag>
-                </div>
-                <div style={{ fontFamily: f.sora, fontSize: 12, color: T.textMid, lineHeight: 1.4 }}>{p.desc}</div>
+        </Card>
+      </div>
+      <Banner>This is what a single marketer with the right AI setup can produce. Imagine the whole team.</Banner>
+    </Slide>
+  );
+}
+
+function Slide5() {
+  const themes = [
+    { name: "Dark", bg: "#0A1520", card: "#152535", accent: "#00C896", text: "#F0F8FF", border: "#1A3045", desc: "Internal reporting, data-heavy decks." },
+    { name: "Light", bg: "#FFFFFF", card: "#E8F4FA", accent: "#00B884", text: "#060E18", border: "#BAD8EA", desc: "External decks, proposals, leadership." },
+    { name: "Alt", bg: "#F2F6FA", card: "#FFFFFF", accent: "#00E5AA", text: "#0A1520", border: "#CBD5E1", desc: "Split panels, high-impact presentations.", second: "#F0B429" },
+  ];
+  const formats = [
+    { icon: "◈", name: "Proposal", desc: "Pitch, strategy, business case" },
+    { icon: "◉", name: "Reporting", desc: "Weekly data, RAG status, KPIs" },
+    { icon: "◎", name: "Scroll Doc", desc: "Timeline, playbook, deep-dive" },
+  ];
+  return (
+    <Slide>
+      <div>{lbl("The System")}<H1>One system. Three formats. Three themes. <span style={{ color: T.accent }}>Infinitely reusable.</span></H1></div>
+      <div style={{ display: "flex", gap: 10 }}>
+        {themes.map((th, i) => (
+          <div key={i} style={{ flex: 1, background: th.bg, border: `1px solid ${th.border}`, borderRadius: 14, padding: "18px 16px", display: "flex", flexDirection: "column", gap: 10, minHeight: 160 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: th.accent, textTransform: "uppercase", letterSpacing: "0.12em" }}>{th.name}</div>
+              <div style={{ display: "flex", gap: 4 }}>
+                <div style={{ width: 10, height: 10, borderRadius: "50%", background: th.accent }} />
+                {th.second && <div style={{ width: 10, height: 10, borderRadius: "50%", background: th.second }} />}
               </div>
             </div>
-          ))}
-        </div>
-      </Slide>
-    );
-  },
-  function PropShowTell({ T }) {
-    return (
-      <Slide>
-        <div><Label T={T}>Show & Tell</Label><H1 T={T}>Here's what it <span style={{ color: T.accent }}>already looks like.</span></H1><Sub T={T}>Replace with context about the demonstration.</Sub></div>
-        <div style={{ display: "flex", gap: 12 }}>
-          {[{ v: "Metric 1", l: "Replace label", c: T.accent }, { v: "Metric 2", l: "Replace label", c: T.second }, { v: "Metric 3", l: "Replace label", c: T.yellow }].map((s, i) => <StatBox key={i} T={T} value={s.v} label={s.l} color={s.c} />)}
-        </div>
-        <div style={{ display: "flex", gap: 12 }}>
-          {[{ label: "What the system handled", color: T.accent, items: ["Replace with item 1", "Replace with item 2", "Replace with item 3", "Replace with item 4"] }, { label: "What I handled", color: T.second, items: ["Replace with item 1", "Replace with item 2", "Replace with item 3"] }].map(col => (
-            <Card T={T} key={col.label} style={{ flex: 1 }}>
-              <div style={{ fontFamily: f.mono, fontSize: 10, color: col.color, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 10 }}>{col.label}</div>
-              {col.items.map((t, i) => (
-                <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 6 }}>
-                  <Pip T={T} color={col.color} />
-                  <div style={{ fontFamily: f.sora, fontSize: 12, color: T.textMid }}>{t}</div>
-                </div>
-              ))}
-            </Card>
-          ))}
-        </div>
-        <Banner T={T}>Replace with the key insight from the demonstration.</Banner>
-      </Slide>
-    );
-  },
-  function PropVision({ T }) {
-    const phases = [
-      { phase: "Phase 1", label: "Solo", status: "Now", color: T.accent, desc: "Replace with Phase 1 description." },
-      { phase: "Phase 2", label: "Team", status: "Q2 2025", color: T.second, desc: "Replace with Phase 2 description." },
-      { phase: "Phase 3", label: "Org", status: "Q3 2025", color: T.yellow, desc: "Replace with Phase 3 description." },
-    ];
-    return (
-      <Slide>
-        <div><Label T={T}>Expansion Vision</Label><H1 T={T}>From <span style={{ color: T.accent }}>one</span> to the whole organisation.</H1><Sub T={T}>Replace with a framing sentence about the expansion arc.</Sub></div>
-        <div style={{ display: "flex", gap: 12 }}>
-          {phases.map((p, i) => (
-            <div key={i} style={{ flex: 1, background: `linear-gradient(155deg, ${p.color}12, ${p.color}04)`, border: `1px solid ${p.color}25`, borderRadius: 12, padding: "20px 16px", display: "flex", flexDirection: "column", gap: 10 }}>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <div style={{ fontFamily: f.mono, fontSize: 9, color: p.color, textTransform: "uppercase", letterSpacing: "0.1em" }}>{p.phase}</div>
-                <Tag T={T} color={p.color}>{p.status}</Tag>
-              </div>
-              <div style={{ fontFamily: f.sora, fontWeight: 800, fontSize: 26, color: T.text, lineHeight: 1 }}>{p.label}</div>
-              <div style={{ width: 28, height: 3, background: p.color, borderRadius: 2 }} />
-              <div style={{ fontFamily: f.sora, fontSize: 12, color: T.textMid, lineHeight: 1.5, marginTop: "auto" }}>{p.desc}</div>
+            <div style={{ flex: 1, background: th.card, borderRadius: 8, padding: "10px 12px" }}>
+              <div style={{ height: 6, borderRadius: 3, background: th.accent, marginBottom: 6, width: "60%" }} />
+              <div style={{ height: 4, borderRadius: 2, background: th.border, marginBottom: 4, width: "90%" }} />
+              <div style={{ height: 4, borderRadius: 2, background: th.border, width: "75%" }} />
             </div>
-          ))}
-        </div>
-        <Banner T={T}>Replace with the single most compelling reason this expansion makes sense now.</Banner>
-      </Slide>
-    );
-  },
-  function PropRoadmap({ T }) {
-    const ms = [
-      { period: "Now", items: ["Milestone already complete", "Milestone already complete"] },
-      { period: "30 Days", items: ["First near-term milestone", "Second near-term milestone"] },
-      { period: "60 Days", items: ["First mid-term milestone", "Second mid-term milestone"] },
-      { period: "90 Days", items: ["First long-term milestone", "Second long-term milestone"] },
-    ];
-    return (
-      <Slide>
-        <div><Label T={T}>Timeline & Roadmap</Label><H1 T={T}>A <span style={{ color: T.accent }}>90-day</span> plan.</H1></div>
-        <div style={{ display: "flex", gap: 10 }}>
-          {ms.map((m, i) => (
-            <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <div style={{ width: 8, height: 8, borderRadius: "50%", background: T.accent }} />
-                <div style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 13, color: T.accent }}>{m.period}</div>
-              </div>
-              <Card T={T} style={{ flex: 1 }}>
-                {m.items.map((item, j) => (
-                  <div key={j} style={{ display: "flex", gap: 7, alignItems: "flex-start", marginBottom: j < m.items.length - 1 ? 8 : 0 }}>
-                    <Pip T={T} />
-                    <div style={{ fontFamily: f.sora, fontSize: 11, color: T.textMid, lineHeight: 1.4 }}>{item}</div>
-                  </div>
-                ))}
-              </Card>
-            </div>
-          ))}
-        </div>
-        <Banner T={T}>Replace with a note on timeline confidence.</Banner>
-      </Slide>
-    );
-  },
-  function PropResources({ T }) {
-    return (
-      <Slide>
-        <div><Label T={T}>Resource Ask</Label><H1 T={T}>The investment is <span style={{ color: T.accent }}>minimal.</span> The return is not.</H1><Sub T={T}>Replace with a framing sentence about the ask.</Sub></div>
-        <div style={{ display: "flex", gap: 12 }}>
-          {[{ cat: "Tooling", color: T.accent, rows: [{ l: "Tool / platform 1", v: "$0", n: "Note" }, { l: "Tool / platform 2", v: "$X/mo", n: "Note" }] }, { cat: "Time", color: T.second, rows: [{ l: "Time investment 1", v: "X hrs", n: "One-time" }, { l: "Time investment 2", v: "X hrs/mo", n: "Ongoing" }] }].map((cat, i) => (
-            <Card T={T} key={i} style={{ flex: 1 }}>
-              <div style={{ fontFamily: f.mono, fontSize: 10, color: cat.color, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>{cat.cat}</div>
-              {cat.rows.map((r, j) => (
-                <div key={j} style={{ paddingBottom: 10, marginBottom: 10, borderBottom: j < cat.rows.length - 1 ? `1px solid ${T.border}` : "none" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 2 }}>
-                    <span style={{ fontFamily: f.sora, fontWeight: 600, fontSize: 12, color: T.text }}>{r.l}</span>
-                    <span style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 12, color: cat.color }}>{r.v}</span>
-                  </div>
-                  <div style={{ fontFamily: f.sora, fontSize: 11, color: T.textDim }}>{r.n}</div>
-                </div>
-              ))}
-            </Card>
-          ))}
-        </div>
-        <div style={{ padding: "12px 16px", background: T.accentDim, border: `1px solid ${T.accent}28`, borderRadius: 10 }}>
-          <div style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 12, color: T.text, marginBottom: 3 }}>What I'm asking for</div>
-          <div style={{ fontFamily: f.sora, fontSize: 12, color: T.textMid, lineHeight: 1.5 }}>Replace with a plain-English statement of the specific ask.</div>
-        </div>
-      </Slide>
-    );
-  },
-  function PropTeam({ T }) {
-    const team = [
-      { name: "Team Member Name", role: "Role / Title", owns: "Area of ownership", tag: "Owner" },
-      { name: "Team Member Name", role: "Role / Title", owns: "Area of ownership", tag: "User" },
-      { name: "Team Member Name", role: "Role / Title", owns: "Area of ownership", tag: "User" },
-    ];
-    return (
-      <Slide>
-        <div><Label T={T}>The Team</Label><H1 T={T}>One system. <span style={{ color: T.accent }}>Every person.</span></H1><Sub T={T}>Replace with a sentence about how the team is structured.</Sub></div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          {team.map((m, i) => (
-            <div key={i} style={{ display: "flex", gap: 14, alignItems: "center", padding: "12px 16px", background: T.card, border: `1px solid ${i === 0 ? T.accent + "40" : T.border}`, borderRadius: 10 }}>
-              <div style={{ width: 36, height: 36, borderRadius: "50%", background: i === 0 ? T.accent : T.border, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <span style={{ fontFamily: f.sora, fontWeight: 800, fontSize: 14, color: i === 0 ? T.onAccent : T.textDim }}>{m.name[0]}</span>
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
-                  <span style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 13, color: T.text }}>{m.name}</span>
-                  <Tag T={T} color={i === 0 ? T.accent : T.second}>{m.tag}</Tag>
-                </div>
-                <div style={{ fontFamily: f.mono, fontSize: 9, color: T.textDim, marginBottom: 2 }}>{m.role}</div>
-                <div style={{ fontFamily: f.sora, fontSize: 11, color: T.textMid }}>{m.owns}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Slide>
-    );
-  },
-  function PropNextSteps({ T }) {
-    const steps = [
-      { n: "01", title: "First action item", desc: "Replace — specific, ownable, time-bound." },
-      { n: "02", title: "Second action item", desc: "Replace — specific, ownable, time-bound." },
-      { n: "03", title: "Third action item", desc: "Replace — specific, ownable, time-bound." },
-    ];
-    return (
-      <Slide>
-        <div style={{ textAlign: "center" }}><Label T={T}>Next Steps</Label><H1 T={T}>Three things to <span style={{ color: T.accent }}>move forward.</span></H1><Sub T={T}>Replace with a closing sentence that motivates action.</Sub></div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          {steps.map(s => (
-            <Card T={T} key={s.n} style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
-              <div style={{ fontFamily: f.sora, fontWeight: 800, fontSize: 28, color: T.accent, lineHeight: 1, minWidth: 38 }}>{s.n}</div>
-              <div>
-                <div style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 14, color: T.text, marginBottom: 3 }}>{s.title}</div>
-                <div style={{ fontFamily: f.sora, fontSize: 12, color: T.textDim, lineHeight: 1.5 }}>{s.desc}</div>
-              </div>
-            </Card>
-          ))}
-        </div>
-        <div style={{ display: "flex", gap: 10 }}>
-          <div style={{ flex: 1, background: T.accentDim, border: `1px solid ${T.accent}30`, borderRadius: 10, padding: "12px 16px", display: "flex", gap: 10, alignItems: "center" }}>
-            <BrandMark size={22} />
+            <div style={{ fontFamily: "'Sora', sans-serif", fontSize: 11, color: th.text === "#F0F8FF" ? "rgba(240,248,255,0.6)" : "rgba(6,14,24,0.5)", lineHeight: 1.4 }}>{th.desc}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ display: "flex", gap: 10 }}>
+        {formats.map((fmt, i) => (
+          <div key={i} style={{ flex: 1, display: "flex", gap: 12, alignItems: "center", padding: "12px 16px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 10 }}>
+            <div style={{ fontFamily: f.sora, fontSize: 22, color: T.accent }}>{fmt.icon}</div>
             <div>
-              <div style={{ fontFamily: f.sora, fontWeight: 600, fontSize: 12, color: T.text }}>Prepared by {DECK.presenter}</div>
-              <div style={{ fontFamily: f.mono, fontSize: 10, color: T.textDim }}>{DECK.contact}</div>
+              <div style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 13, color: T.text, marginBottom: 2 }}>{fmt.name}</div>
+              <div style={{ fontFamily: f.sora, fontSize: 11, color: T.textDim }}>{fmt.desc}</div>
             </div>
           </div>
-          <div style={{ flex: 2, background: T.accent, borderRadius: 10, padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <span style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 13, color: T.onAccent }}>ProphetX Marketing · {DECK.date}</span>
-          </div>
-        </div>
-      </Slide>
-    );
-  },
-];
-const PROPOSAL_LABELS = ["Title", "Summary", "Opportunity", "Approach", "Show & Tell", "Vision", "Roadmap", "Resources", "Team", "Next Steps"];
+        ))}
+      </div>
+      <Banner>Every future deck the team builds pulls from this same system. Consistent. On-brand. Fast.</Banner>
+    </Slide>
+  );
+}
 
-// ── REPORTING SLIDES ─────────────────────────────────────────
-const REPORTING_SLIDES = [
-  function RepTitle({ T }) {
-    return (
-      <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "100%", textAlign: "center", padding: "0 clamp(32px, 7vw, 120px)", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", top: "35%", left: "50%", width: 500, height: 340, background: `radial-gradient(ellipse, ${T.accentGlow} 0%, transparent 65%)`, transform: "translate(-50%,-50%)", pointerEvents: "none" }} />
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 28, position: "relative" }}>
-          <BrandMark size={28} />
-          <span style={{ fontFamily: f.mono, fontSize: 9, color: T.textDim, letterSpacing: "0.12em", textTransform: "uppercase" }}>Marketing</span>
-        </div>
-        <h1 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(24px, 3.8vw, 50px)", color: T.text, margin: 0, lineHeight: 1.05, letterSpacing: "-0.04em", position: "relative" }}>
-          {DECK.title}<br /><span style={{ color: T.accent }}>Report</span>
-        </h1>
-        <p style={{ fontFamily: f.sora, fontWeight: 300, fontSize: "clamp(13px, 1.4vw, 16px)", color: T.textMid, marginTop: 16, maxWidth: 440, lineHeight: 1.6, position: "relative" }}>{DECK.subtitle}</p>
-        <div style={{ marginTop: 24, display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center", position: "relative" }}>
-          <Tag T={T}>Date Range</Tag><Tag T={T} color={T.second}>Data Source</Tag><Tag T={T} color={T.yellow}>Internal</Tag>
-        </div>
-        <div style={{ marginTop: 24, display: "flex", flexDirection: "column", alignItems: "center", gap: 10, position: "relative" }}>
-          <div style={{ width: 60, height: 1, background: `linear-gradient(90deg, transparent, ${T.textDim}50, transparent)` }} />
-          <div style={{ fontFamily: f.mono, fontSize: 10, color: T.textDim }}>Prepared by {DECK.presenter} · {DECK.date}</div>
+function Slide6() {
+  const claudeItems = [
+    { name: "Weekly creative reporting", desc: "Connected to Smartly — asset type, creator, theme & message breakdowns" },
+    { name: "Marketing attribution framework", desc: "Complete source-level attribution model for every channel" },
+    { name: "Creative test planning & repository", desc: "Templated planning and historical reporting in one place" },
+    { name: "Scripting & rescripting", desc: "Human-led creative direction, AI-iterated for speed and volume" },
+    { name: "Budgeting, data analysis & dashboarding", desc: "Automated pacing, anomaly detection, and performance summaries" },
+  ];
+  const aiItems = [
+    { name: "Smartly PBA", desc: "Predictive cross-channel budget allocation" },
+    { name: "Smartly AI", desc: "Template-based ad creation with AI enhancements" },
+    { name: "Creatify", desc: "AI-generated ad video production" },
+    { name: "Google Gemini", desc: "Brand book development for agencies, partners & creators" },
+    { name: "Claude + Canva", desc: "Static ads and additional brand resources for advertising" },
+  ];
+  return (
+    <Slide>
+      <div>{lbl("The Channel Roadmap")}<H1>A full AI stack for <span style={{ color: T.accent }}>performance marketing.</span></H1><p style={{ fontFamily: f.sora, fontWeight: 300, fontSize: "clamp(12px, 1.3vw, 15px)", color: T.textMid, margin: "8px 0 0", lineHeight: 1.5 }}>Performance marketing is the proving ground. Everything built here gets refined into team-wide templates.</p></div>
+      <div style={{ display: "flex", gap: 12 }}>
+        <Card style={{ flex: 1 }}>
+          <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>Claude-Powered</div>
+          {claudeItems.map((item, i) => (
+            <div key={i} style={{ paddingBottom: 10, marginBottom: 10, borderBottom: i < claudeItems.length - 1 ? `1px solid ${T.border}` : "none" }}>
+              <div style={{ fontFamily: f.sora, fontWeight: 600, fontSize: 12, color: T.text, marginBottom: 2 }}>{item.name}</div>
+              <div style={{ fontFamily: f.sora, fontSize: 11, color: T.textDim, lineHeight: 1.4 }}>{item.desc}</div>
+            </div>
+          ))}
+        </Card>
+        <Card style={{ flex: 1 }}>
+          <div style={{ fontFamily: f.mono, fontSize: 10, color: T.second, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>Non-Claude AI Tools</div>
+          {aiItems.map((item, i) => (
+            <div key={i} style={{ paddingBottom: 10, marginBottom: 10, borderBottom: i < aiItems.length - 1 ? `1px solid ${T.border}` : "none" }}>
+              <div style={{ fontFamily: f.sora, fontWeight: 600, fontSize: 12, color: T.text, marginBottom: 2 }}>{item.name}</div>
+              <div style={{ fontFamily: f.sora, fontSize: 11, color: T.textDim, lineHeight: 1.4 }}>{item.desc}</div>
+            </div>
+          ))}
+        </Card>
+      </div>
+    </Slide>
+  );
+}
+
+function Slide7() {
+  const items = [
+    { icon: "📝", name: "Documentation & Confluence", desc: "Claude maintains SOPs, campaign briefs, and institutional knowledge. No more knowledge living in people's heads." },
+    { icon: "📌", name: "Monday.com Project Management", desc: "Automated logging, status updates, and reporting directly from Claude conversations." },
+    { icon: "📈", name: "Weekly Trading Deck & QBR", desc: "Standardised reporting templates any team member can populate in minutes." },
+    { icon: "💬", name: "Brand Ad Messaging Hierarchy", desc: "A living document Claude helps maintain, iterate, and enforce across all channels." },
+    { icon: "🎨", name: "Brand Design Skill", desc: "Claude-assisted static ad creation via Canva and a fully functional brand book for agencies, partners, and creators." },
+  ];
+  return (
+    <Slide>
+      <div>{lbl("The Team Infrastructure")}<H1>Expanding the system across the <span style={{ color: T.accent }}>entire marketing team.</span></H1><p style={{ fontFamily: f.sora, fontWeight: 300, fontSize: "clamp(12px, 1.3vw, 15px)", color: T.textMid, margin: "8px 0 0", lineHeight: 1.5 }}>What gets proven in performance marketing becomes the blueprint for the whole team.</p></div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {items.map((item, i) => (
+          <div key={i} style={{ display: "flex", gap: 14, padding: "12px 16px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 10 }}>
+            <div style={{ fontSize: 18, minWidth: 26, flexShrink: 0 }}>{item.icon}</div>
+            <div>
+              <div style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 13, color: T.text, marginBottom: 3 }}>{item.name}</div>
+              <div style={{ fontFamily: f.sora, fontSize: 12, color: T.textMid, lineHeight: 1.4 }}>{item.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Slide>
+  );
+}
+
+function Slide8() {
+  return (
+    <Slide>
+      <div>{lbl("The Commitment")}<H1>Building the plane <span style={{ color: T.accent }}>while we fly it.</span></H1></div>
+      <div style={{ padding: "16px 20px", background: T.accentDim, border: `1px solid ${T.accent}30`, borderRadius: 12 }}>
+        <div style={{ fontFamily: f.sora, fontSize: 14, color: T.text, lineHeight: 1.7 }}>
+          Leadership has set a clear mandate — AI isn't optional. The expectation is measurably more output, tighter operations, and a marketing team that's ahead of the curve on the tools shaping the industry.
         </div>
       </div>
-    );
-  },
-  function RepKPIs({ T }) {
-    return (
-      <Slide>
-        <div><Label T={T}>Performance Snapshot</Label><H1 T={T}>Headline numbers — <span style={{ color: T.accent }}>week ending [date].</span></H1><Sub T={T}>Replace subtitle with period context and comparison baseline.</Sub></div>
-        <div style={{ display: "flex", gap: 10 }}>
-          {[{ v: "0,000", l: "Primary KPI", c: T.accent }, { v: "+0%", l: "vs Prior Period", c: T.accent }, { v: "0.0%", l: "Conversion Rate", c: T.second }, { v: "$0K", l: "Pipeline / Value", c: T.yellow }].map((s, i) => <StatBox key={i} T={T} value={s.v} label={s.l} color={s.c} />)}
-        </div>
-        <div style={{ display: "flex", gap: 10 }}>
-          {[{ label: "On Track", color: T.accent, note: "Replace with what's performing above target." }, { label: "Watch", color: T.yellow, note: "Replace with what needs attention." }, { label: "Action Needed", color: T.red, note: "Replace with what's underperforming." }].map(f2 => (
-            <Card T={T} key={f2.label} style={{ flex: 1, borderLeft: `3px solid ${f2.color}` }}>
-              <div style={{ fontFamily: f.mono, fontSize: 9, color: f2.color, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>{f2.label}</div>
-              <div style={{ fontFamily: f.sora, fontSize: 12, color: T.textMid, lineHeight: 1.4 }}>{f2.note}</div>
-            </Card>
-          ))}
-        </div>
-        <Banner T={T}>Replace with the single most important insight from this week's data.</Banner>
-      </Slide>
-    );
-  },
-  function RepChannels({ T }) {
-    const data = [
-      { label: "Channel 1", value: 80, display: "0,000", color: T.accent },
-      { label: "Channel 2", value: 60, display: "0,000", color: T.second },
-      { label: "Channel 3", value: 35, display: "0,000", color: T.yellow },
-      { label: "Channel 4", value: 15, display: "0,000", color: T.textDim },
-    ];
-    return (
-      <Slide>
-        <div><Label T={T}>Channel Breakdown</Label><H1 T={T}>Where the <span style={{ color: T.accent }}>volume is coming from.</span></H1><Sub T={T}>Replace with a sentence framing what the channel mix tells us.</Sub></div>
-        <div style={{ display: "flex", gap: 12 }}>
-          <Card T={T} style={{ flex: 2 }}>
-            <div style={{ fontFamily: f.mono, fontSize: 9, color: T.textDim, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>Volume by channel</div>
-            <BarChart T={T} data={data} />
+      <div style={{ display: "flex", gap: 12 }}>
+        {[
+          { n: "1 hr/day", label: "AI Upskilling", desc: "Dedicated to AI infrastructure build and upskilling — every week without exception." },
+          { n: "Concurrent", label: "Execution Model", desc: "AI infrastructure built alongside day-to-day work, not instead of it." },
+          { n: "Prove → Scale", label: "The Approach", desc: "Proven in performance marketing first. Handed to the whole team when ready." },
+        ].map((c, i) => (
+          <Card key={i} style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(18px, 2.2vw, 26px)", color: T.accent, lineHeight: 1 }}>{c.n}</div>
+            <div style={{ fontFamily: f.mono, fontSize: 9, color: T.textDim, textTransform: "uppercase", letterSpacing: "0.1em" }}>{c.label}</div>
+            <div style={{ fontFamily: f.sora, fontSize: 12, color: T.textMid, lineHeight: 1.5 }}>{c.desc}</div>
           </Card>
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
-            {data.map((d, i) => (
-              <Card T={T} key={i} style={{ flex: 1 }}>
-                <div style={{ fontFamily: f.mono, fontSize: 9, color: d.color, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 3 }}>{d.label}</div>
-                <div style={{ fontFamily: f.sora, fontWeight: 800, fontSize: 20, color: T.text, lineHeight: 1 }}>{d.display}</div>
-                <div style={{ fontFamily: f.sora, fontSize: 11, color: T.textDim, marginTop: 2 }}>Replace with delta</div>
-              </Card>
-            ))}
-          </div>
-        </div>
-        <Banner T={T}>Replace with the channel-level insight.</Banner>
-      </Slide>
-    );
-  },
-  function RepRAG({ T }) {
-    const items = [
-      { label: "Initiative / Campaign 1", status: "green", owner: "Owner", note: "On track — replace with specific status note." },
-      { label: "Initiative / Campaign 2", status: "green", owner: "Owner", note: "On track — replace with specific status note." },
-      { label: "Initiative / Campaign 3", status: "amber", owner: "Owner", note: "At risk — replace with risk and mitigation." },
-      { label: "Initiative / Campaign 4", status: "red", owner: "Owner", note: "Off track — replace with what's broken and action taken." },
-    ];
-    const colors = { green: T.accent, amber: T.yellow, red: T.red };
-    const labels = { green: "On Track", amber: "At Risk", red: "Off Track" };
-    return (
-      <Slide>
-        <div><Label T={T}>Initiative Health</Label><H1 T={T}>RAG status — <span style={{ color: T.accent }}>what's moving, what's stuck.</span></H1></div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-          {items.map((item, i) => (
-            <div key={i} style={{ display: "flex", gap: 14, alignItems: "center", padding: "11px 16px", background: T.card, border: `1px solid ${T.border}`, borderLeft: `3px solid ${colors[item.status]}`, borderRadius: 10 }}>
-              <div style={{ minWidth: 70, flexShrink: 0 }}>
-                <div style={{ fontFamily: f.mono, fontSize: 9, color: colors[item.status], textTransform: "uppercase", letterSpacing: "0.08em" }}>{labels[item.status]}</div>
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontFamily: f.sora, fontWeight: 600, fontSize: 13, color: T.text, marginBottom: 2 }}>{item.label}</div>
-                <div style={{ fontFamily: f.sora, fontSize: 11, color: T.textMid, lineHeight: 1.4 }}>{item.note}</div>
-              </div>
-              <div style={{ fontFamily: f.mono, fontSize: 9, color: T.textDim, flexShrink: 0 }}>{item.owner}</div>
-            </div>
-          ))}
-        </div>
-        <Banner T={T}>Replace with overall health summary and the one thing needing a decision this week.</Banner>
-      </Slide>
-    );
-  },
-  function RepNextSteps({ T }) {
-    const steps = [
-      { n: "01", title: "Action item one", desc: "Replace — specific, ownable, time-bound." },
-      { n: "02", title: "Action item two", desc: "Replace — specific, ownable, time-bound." },
-      { n: "03", title: "Action item three", desc: "Replace — specific, ownable, time-bound." },
-    ];
-    return (
-      <Slide>
-        <div style={{ textAlign: "center" }}><Label T={T}>Actions</Label><H1 T={T}>What moves <span style={{ color: T.accent }}>this week.</span></H1></div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          {steps.map(s => (
-            <Card T={T} key={s.n} style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
-              <div style={{ fontFamily: f.sora, fontWeight: 800, fontSize: 28, color: T.accent, lineHeight: 1, minWidth: 36 }}>{s.n}</div>
-              <div><div style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 14, color: T.text, marginBottom: 3 }}>{s.title}</div><div style={{ fontFamily: f.sora, fontSize: 12, color: T.textDim, lineHeight: 1.5 }}>{s.desc}</div></div>
-            </Card>
-          ))}
-        </div>
-        <div style={{ display: "flex", gap: 10 }}>
-          <div style={{ flex: 1, background: T.accentDim, border: `1px solid ${T.accent}28`, borderRadius: 10, padding: "12px 16px", display: "flex", gap: 10, alignItems: "center" }}>
-            <BrandMark size={20} />
-            <div><div style={{ fontFamily: f.sora, fontWeight: 600, fontSize: 12, color: T.text }}>Prepared by {DECK.presenter}</div><div style={{ fontFamily: f.mono, fontSize: 10, color: T.textDim }}>{DECK.contact}</div></div>
-          </div>
-          <div style={{ flex: 2, background: T.accent, borderRadius: 10, padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <span style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 13, color: T.onAccent }}>Next review: [Date] · ProphetX Marketing</span>
-          </div>
-        </div>
-      </Slide>
-    );
-  },
-];
-const REPORTING_LABELS = ["Title", "KPIs", "Channels", "RAG Status", "Actions"];
+        ))}
+      </div>
+      <Banner>The goal isn't to automate marketing. It's to make every marketer on this team exponentially more effective.</Banner>
+    </Slide>
+  );
+}
 
-// ── SCROLL SECTIONS ──────────────────────────────────────────
-const SCROLL_SECTIONS = [
-  { label: "Overview", content: function ScrollOverview({ T }) {
-    return (
-      <div style={{ maxWidth: 720, margin: "0 auto", padding: "60px 0 40px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 28 }}>
-          <BrandMark size={24} />
-          <span style={{ fontFamily: f.mono, fontSize: 9, color: T.textDim, letterSpacing: "0.12em", textTransform: "uppercase" }}>Marketing</span>
-        </div>
-        <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 14 }}>Document Overview</div>
-        <h1 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(28px, 4vw, 52px)", color: T.text, margin: 0, lineHeight: 1.05, letterSpacing: "-0.04em", marginBottom: 16 }}>
-          {DECK.title}<br /><span style={{ color: T.accent }}>— {DECK.topic}</span>
-        </h1>
-        <p style={{ fontFamily: f.sora, fontWeight: 300, fontSize: 17, color: T.textMid, lineHeight: 1.7, marginBottom: 28 }}>{DECK.subtitle} Replace this with a fuller introduction paragraph.</p>
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 32 }}>
-          <Tag T={T}>Scroll Document</Tag><Tag T={T} color={T.second}>{DECK.topic}</Tag><Tag T={T} color={T.yellow}>{DECK.date}</Tag>
-        </div>
-        <div style={{ height: 1, background: T.border, marginBottom: 32 }} />
-        <div style={{ fontFamily: f.mono, fontSize: 10, color: T.textDim, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 12 }}>Contents</div>
-        {["Overview", "Context & Background", "Key Findings", "Timeline", "Recommendations", "Closing"].map((s, i) => (
-          <div key={i} style={{ display: "flex", gap: 10, alignItems: "center", padding: "8px 0", borderBottom: `1px solid ${T.border}` }}>
-            <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, width: 20 }}>{String(i + 1).padStart(2, "0")}</div>
-            <div style={{ fontFamily: f.sora, fontSize: 14, color: T.text }}>{s}</div>
-          </div>
-        ))}
-        <div style={{ marginTop: 20, fontFamily: f.mono, fontSize: 10, color: T.textDim }}>Prepared by {DECK.presenter} · {DECK.contact} · {DECK.date}</div>
-      </div>
-    );
-  }},
-  { label: "Context", content: function ScrollContext({ T }) {
-    return (
-      <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 0" }}>
-        <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 12 }}>01 — Context & Background</div>
-        <h2 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(22px, 3vw, 36px)", color: T.text, margin: "0 0 16px", letterSpacing: "-0.03em", lineHeight: 1.1 }}>Replace with the context headline.</h2>
-        <p style={{ fontFamily: f.sora, fontSize: 15, color: T.textMid, lineHeight: 1.8, marginBottom: 20 }}>Replace this paragraph with background context. Orient the reader on the situation — what was happening, what the conditions were, and why this document exists.</p>
-        <div style={{ padding: "16px 20px", background: T.accentDim, borderLeft: `3px solid ${T.accent}`, borderRadius: "0 8px 8px 0", marginBottom: 24 }}>
-          <div style={{ fontFamily: f.mono, fontSize: 9, color: T.accent, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>Key Assumption</div>
-          <div style={{ fontFamily: f.sora, fontSize: 14, color: T.text, lineHeight: 1.5 }}>Replace with a key assumption or constraint that underpins everything that follows.</div>
-        </div>
-        <div style={{ display: "flex", gap: 10 }}>
-          {[{ l: "Context metric 1", v: "Replace" }, { l: "Context metric 2", v: "Replace" }, { l: "Context metric 3", v: "Replace" }].map((s, i) => (
-            <div key={i} style={{ flex: 1, padding: "14px 16px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 10, textAlign: "center" }}>
-              <div style={{ fontFamily: f.sora, fontWeight: 800, fontSize: 22, color: T.accent, marginBottom: 4 }}>{s.v}</div>
-              <div style={{ fontFamily: f.mono, fontSize: 9, color: T.textDim, textTransform: "uppercase", letterSpacing: "0.08em" }}>{s.l}</div>
+function Slide9() {
+  const phases = [
+    {
+      label: "Now", color: T.accent, status: "Live",
+      items: ["Presentation system (3 formats, 3 themes, deployed)", "Creative reporting workflow", "Monday.com artifact library", "Campaign documentation system", "Performance workflow templates"],
+    },
+    {
+      label: "30 Days", color: T.second, status: "Next",
+      items: ["Creative reporting connected to Smartly", "Attribution framework v1", "Smartly PBA evaluation", "Creatify testing begins"],
+    },
+    {
+      label: "60 Days", color: T.yellow, status: "Building",
+      items: ["Cross-functional deck templates rolled out", "Confluence documentation system live", "Creative test planning repository", "Smartly AI ad creation in testing"],
+    },
+    {
+      label: "90 Days", color: "#94A3B8", status: "Vision",
+      items: ["Full team on Claude Enterprise", "Brand book v1 complete", "QBR & trading deck templates standardised", "Brand messaging hierarchy documented"],
+    },
+  ];
+  return (
+    <Slide>
+      <div>{lbl("The Roadmap")}<H1>From proof of concept to <span style={{ color: T.accent }}>team-wide infrastructure.</span></H1></div>
+      <div style={{ display: "flex", gap: 10 }}>
+        {phases.map((ph, i) => (
+          <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", gap: 0 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+              <div style={{ width: 10, height: 10, borderRadius: "50%", background: ph.color, flexShrink: 0 }} />
+              <div style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 14, color: ph.color }}>{ph.label}</div>
+              <span style={{ fontFamily: f.mono, fontSize: 9, color: ph.color, background: ph.color + "18", border: `1px solid ${ph.color}28`, borderRadius: 4, padding: "1px 6px", letterSpacing: "0.06em" }}>{ph.status}</span>
             </div>
-          ))}
-        </div>
-      </div>
-    );
-  }},
-  { label: "Findings", content: function ScrollFindings({ T }) {
-    return (
-      <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 0" }}>
-        <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 12 }}>02 — Key Findings</div>
-        <h2 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(22px, 3vw, 36px)", color: T.text, margin: "0 0 16px", letterSpacing: "-0.03em", lineHeight: 1.1 }}>Replace with the findings headline.</h2>
-        <p style={{ fontFamily: f.sora, fontSize: 15, color: T.textMid, lineHeight: 1.8, marginBottom: 24 }}>Replace with a brief intro to the findings.</p>
-        {[{ n: "01", title: "Finding one headline", body: "Replace with a full description of this finding. Write in prose — explain what you found, what the data shows, and what it means." }, { n: "02", title: "Finding two headline", body: "Replace with a full description of this finding. Include relevant data points inline." }, { n: "03", title: "Finding three headline", body: "Replace with a full description of this finding. Include any nuance or caveats." }].map(f2 => (
-          <div key={f2.n} style={{ marginBottom: 20, padding: "20px 22px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 12 }}>
-            <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-              <div style={{ fontFamily: f.sora, fontWeight: 800, fontSize: 24, color: T.accent, lineHeight: 1, minWidth: 32, flexShrink: 0 }}>{f2.n}</div>
-              <div>
-                <div style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 15, color: T.text, marginBottom: 6 }}>{f2.title}</div>
-                <div style={{ fontFamily: f.sora, fontSize: 14, color: T.textMid, lineHeight: 1.7 }}>{f2.body}</div>
-              </div>
+            <div style={{ flex: 1, background: T.card, border: `1px solid ${T.border}`, borderLeft: `3px solid ${ph.color}`, borderRadius: "0 10px 10px 0", padding: "14px 14px", display: "flex", flexDirection: "column", gap: 8 }}>
+              {ph.items.map((item, j) => (
+                <div key={j} style={{ display: "flex", gap: 7, alignItems: "flex-start" }}>
+                  <Pip color={ph.color} />
+                  <div style={{ fontFamily: f.sora, fontSize: 11, color: T.textMid, lineHeight: 1.4 }}>{item}</div>
+                </div>
+              ))}
             </div>
           </div>
         ))}
       </div>
-    );
-  }},
-  { label: "Timeline", content: function ScrollTimeline({ T }) {
-    const events = [
-      { date: "Date / Period", title: "Event or milestone title", desc: "Replace with a description of what happened at this point." },
-      { date: "Date / Period", title: "Event or milestone title", desc: "Replace with event description." },
-      { date: "Date / Period", title: "Event or milestone title", desc: "Replace with event description." },
-      { date: "Date / Period", title: "Planned — Future milestone", desc: "Replace with what's coming next and what it depends on." },
-    ];
-    return (
-      <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 0" }}>
-        <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 12 }}>03 — Timeline</div>
-        <h2 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(22px, 3vw, 36px)", color: T.text, margin: "0 0 16px", letterSpacing: "-0.03em", lineHeight: 1.1 }}>Replace with timeline headline.</h2>
-        <p style={{ fontFamily: f.sora, fontSize: 15, color: T.textMid, lineHeight: 1.8, marginBottom: 28 }}>Replace with a brief intro describing the period this timeline covers.</p>
-        <div style={{ position: "relative" }}>
-          <div style={{ position: "absolute", left: 72, top: 0, bottom: 0, width: 1, background: T.border }} />
-          {events.map((e, i) => (
-            <div key={i} style={{ display: "flex", gap: 20, marginBottom: 24, position: "relative" }}>
-              <div style={{ width: 64, flexShrink: 0, textAlign: "right" }}>
-                <div style={{ fontFamily: f.mono, fontSize: 10, color: T.textDim, lineHeight: 1.4 }}>{e.date}</div>
-              </div>
-              <div style={{ width: 16, flexShrink: 0, display: "flex", justifyContent: "center", paddingTop: 2 }}>
-                <div style={{ width: 9, height: 9, borderRadius: "50%", background: T.accent, border: `2px solid ${T.bg}`, zIndex: 1 }} />
-              </div>
-              <div style={{ flex: 1, paddingBottom: 20 }}>
-                <div style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 14, color: T.text, marginBottom: 4 }}>{e.title}</div>
-                <div style={{ fontFamily: f.sora, fontSize: 13, color: T.textMid, lineHeight: 1.6 }}>{e.desc}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }},
-  { label: "Recommendations", content: function ScrollRecs({ T }) {
-    return (
-      <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 0" }}>
-        <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 12 }}>04 — Recommendations</div>
-        <h2 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(22px, 3vw, 36px)", color: T.text, margin: "0 0 16px", letterSpacing: "-0.03em", lineHeight: 1.1 }}>Replace with recommendations headline.</h2>
-        <p style={{ fontFamily: f.sora, fontSize: 15, color: T.textMid, lineHeight: 1.8, marginBottom: 24 }}>Replace with a brief framing paragraph explaining the basis for these recommendations.</p>
-        {[{ n: "01", priority: "High", title: "Recommendation one", rationale: "Replace with rationale.", action: "Replace with the specific action required." }, { n: "02", priority: "High", title: "Recommendation two", rationale: "Replace with rationale.", action: "Replace with the specific action required." }, { n: "03", priority: "Medium", title: "Recommendation three", rationale: "Replace with rationale.", action: "Replace with the specific action required." }].map((r, i) => (
-          <div key={i} style={{ marginBottom: 16, padding: "20px 22px", background: T.card, border: `1px solid ${T.border}`, borderLeft: `3px solid ${T.accent}`, borderRadius: "0 12px 12px 0" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
-              <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                <span style={{ fontFamily: f.sora, fontWeight: 800, fontSize: 22, color: T.accent, lineHeight: 1 }}>{r.n}</span>
-                <span style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 14, color: T.text }}>{r.title}</span>
-              </div>
-              <Tag T={T} color={r.priority === "High" ? T.accent : T.yellow}>{r.priority}</Tag>
-            </div>
-            <div style={{ fontFamily: f.sora, fontSize: 13, color: T.textMid, lineHeight: 1.6, marginBottom: 8 }}><strong style={{ color: T.text, fontWeight: 600 }}>Why: </strong>{r.rationale}</div>
-            <div style={{ fontFamily: f.sora, fontSize: 13, color: T.textMid, lineHeight: 1.6 }}><strong style={{ color: T.accent, fontWeight: 600 }}>Action: </strong>{r.action}</div>
-          </div>
-        ))}
-      </div>
-    );
-  }},
-  { label: "Closing", content: function ScrollClose({ T }) {
-    return (
-      <div style={{ maxWidth: 720, margin: "0 auto", padding: "40px 0 80px" }}>
-        <div style={{ fontFamily: f.mono, fontSize: 10, color: T.accent, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 12 }}>05 — Closing</div>
-        <h2 style={{ fontFamily: f.sora, fontWeight: 800, fontSize: "clamp(22px, 3vw, 36px)", color: T.text, margin: "0 0 16px", letterSpacing: "-0.03em", lineHeight: 1.1 }}>Replace with a closing headline.</h2>
-        <p style={{ fontFamily: f.sora, fontSize: 15, color: T.textMid, lineHeight: 1.8, marginBottom: 28 }}>Replace with a closing paragraph — summarise the key message and make the path forward clear.</p>
-        <div style={{ padding: "20px 22px", background: T.accentDim, border: `1px solid ${T.accent}28`, borderRadius: 12, marginBottom: 24 }}>
-          <div style={{ fontFamily: f.mono, fontSize: 9, color: T.accent, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Next Steps</div>
-          {["Replace with first next step.", "Replace with second next step.", "Replace with third next step."].map((s, i) => (
-            <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: i < 2 ? 8 : 0 }}>
-              <Pip T={T} />
-              <div style={{ fontFamily: f.sora, fontSize: 14, color: T.text, lineHeight: 1.5 }}>{s}</div>
-            </div>
-          ))}
-        </div>
-        <div style={{ height: 1, background: T.border, marginBottom: 24 }} />
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <BrandMark size={22} />
-            <div>
-              <div style={{ fontFamily: f.sora, fontWeight: 600, fontSize: 13, color: T.text }}>{DECK.presenter}</div>
-              <div style={{ fontFamily: f.mono, fontSize: 10, color: T.textDim }}>{DECK.contact}</div>
-            </div>
-          </div>
-          <div style={{ fontFamily: f.mono, fontSize: 10, color: T.textDim }}>ProphetX Marketing · {DECK.date}</div>
-        </div>
-      </div>
-    );
-  }},
-];
+      <Banner solid>1 hour a day. 90 days. A fully systematised marketing operation.</Banner>
+    </Slide>
+  );
+}
 
-// ── NAV ENGINE ───────────────────────────────────────────────
-function MasterTemplate() {
-  const [theme, setTheme] = useState("lightB");
-  const [format, setFormat] = useState("proposal");
-  const [slideIdx, setSlideIdx] = useState(0);
+// ── NAV ENGINE ────────────────────────────────────────────────
+const SLIDES = [Slide0, Slide1, Slide2, Slide3, Slide4, Slide5, Slide6, Slide7, Slide8, Slide9];
+const LABELS = ["Title", "Agenda", "Foundation", "Built", "Show & Tell", "System", "Channel", "Team", "Mission", "Timeline"];
+
+function getSlideFromHash() {
+  const m = window.location.hash.match(/^#\/(\d+)$/);
+  if (m) { const n = parseInt(m[1]); if (n >= 0 && n < SLIDES.length) return n; }
+  return 0;
+}
+
+function Presentation() {
+  const [cur, setCur] = useState(getSlideFromHash);
+  const [dir, setDir] = useState(1);
   const [animating, setAnimating] = useState(false);
   const [exiting, setExiting] = useState(false);
-  const [dir, setDir] = useState(1);
   const [touch, setTouch] = useState(null);
-  const T = THEMES[theme];
 
-  const slides = format === "proposal" ? PROPOSAL_SLIDES : format === "reporting" ? REPORTING_SLIDES : null;
-  const labels = format === "proposal" ? PROPOSAL_LABELS : format === "reporting" ? REPORTING_LABELS : SCROLL_SECTIONS.map(s => s.label);
-  const isScroll = format === "scroll";
+  useEffect(() => { window.location.hash = `#/${cur}`; }, [cur]);
 
   const go = useCallback((delta) => {
-    if (animating || isScroll) return;
-    const max = slides.length;
-    const next = slideIdx + delta;
-    if (next < 0 || next >= max) return;
+    if (animating) return;
+    const next = cur + delta;
+    if (next < 0 || next >= SLIDES.length) return;
     setDir(delta); setAnimating(true); setExiting(true);
-    setTimeout(() => { setExiting(false); setSlideIdx(next); setAnimating(false); }, 270);
-  }, [slideIdx, animating, isScroll, slides]);
+    setTimeout(() => { setExiting(false); setCur(next); setAnimating(false); }, 270);
+  }, [cur, animating]);
 
   useEffect(() => {
-    if (isScroll) return;
     const h = (e) => {
       if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); go(1); }
       if (e.key === "ArrowLeft") { e.preventDefault(); go(-1); }
     };
     window.addEventListener("keydown", h);
     return () => window.removeEventListener("keydown", h);
-  }, [go, isScroll]);
+  }, [go]);
 
-  const switchFormat = (f) => { setFormat(f); setSlideIdx(0); };
   const onTouchStart = (e) => setTouch(e.targetTouches[0].clientX);
   const onTouchEnd = (e) => {
-    if (!touch || isScroll) return;
+    if (!touch) return;
     const dist = touch - e.changedTouches[0].clientX;
     if (Math.abs(dist) > 50) go(dist > 0 ? 1 : -1);
     setTouch(null);
   };
 
-  const SlideComp = !isScroll && slides ? slides[slideIdx] : null;
-  const isDark = theme === "dark";
-  const wordmarkColor = isDark ? "white" : "#1B2242";
+  const SlideComp = SLIDES[cur];
 
   return (
     <>
       <style>{fonts}</style>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { overflow: ${isScroll ? "auto" : "hidden"}; background: ${T.bg}; transition: background 0.3s; }
+        body { overflow: hidden; background: ${T.bg}; }
         @keyframes sIn  { from { opacity:0; transform:translateX(48px);  } to { opacity:1; transform:translateX(0); } }
         @keyframes sOut { from { opacity:1; transform:translateX(0);     } to { opacity:0; transform:translateX(-48px); } }
         @keyframes sInR { from { opacity:0; transform:translateX(-48px); } to { opacity:1; transform:translateX(0); } }
         @keyframes sOutR{ from { opacity:1; transform:translateX(0);     } to { opacity:0; transform:translateX(48px); } }
         button { transition: all 0.15s ease; } button:hover { opacity: 0.85; }
-        ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-thumb { background: ${T.border}; border-radius: 2px; }
       `}</style>
-      <div style={{ width: "100vw", minHeight: "100vh", background: T.bg, transition: "background 0.3s ease" }} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: `radial-gradient(ellipse at 12% 45%, ${T.accentGlow} 0%, transparent 50%), radial-gradient(ellipse at 88% 75%, ${T.second}08 0%, transparent 45%)`, zIndex: 0 }} />
+      <div onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}
+        style={{ width: "100vw", height: "100vh", background: T.bg, position: "relative", overflow: "hidden" }}>
 
-        {/* Control bar */}
-        <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: 44, background: T.bg, borderBottom: `1px solid ${T.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 18px", zIndex: 100 }}>
-          <Wordmark size={13} color={wordmarkColor} />
-          <div style={{ display: "flex", gap: 4 }}>
-            {Object.values(FORMATS).map(fm => (
-              <button key={fm.id} onClick={() => switchFormat(fm.id)} style={{ fontFamily: f.mono, fontSize: 9, padding: "4px 9px", borderRadius: 5, border: `1px solid ${format === fm.id ? T.accent : T.border}`, background: format === fm.id ? T.accentDim : "transparent", color: format === fm.id ? T.accent : T.textDim, cursor: "pointer", letterSpacing: "0.06em", fontWeight: format === fm.id ? 700 : 400 }}>{fm.icon} {fm.label}</button>
-            ))}
-          </div>
-          <div style={{ display: "flex", gap: 4 }}>
-            {Object.values(THEMES).map(th => (
-              <button key={th.id} onClick={() => setTheme(th.id)} style={{ fontFamily: f.mono, fontSize: 9, padding: "4px 9px", borderRadius: 5, border: `1px solid ${theme === th.id ? T.accent : T.border}`, background: theme === th.id ? T.accent : "transparent", color: theme === th.id ? T.onAccent : T.textDim, cursor: "pointer", letterSpacing: "0.07em", fontWeight: theme === th.id ? 700 : 400 }}>{th.label}</button>
-            ))}
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: `radial-gradient(ellipse at 12% 45%, ${T.accentGlow} 0%, transparent 50%)` }} />
+
+        {/* Top bar */}
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 44, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 22px", zIndex: 20, borderBottom: `1px solid ${T.border}`, background: T.bg }}>
+          <Wordmark size={13} color={T.text} />
+          <div style={{ fontFamily: f.mono, fontSize: 11, color: T.textDim }}>
+            {LABELS[cur]} · {String(cur + 1).padStart(2, "0")} / {String(SLIDES.length).padStart(2, "0")}
           </div>
         </div>
 
-        {isScroll ? (
-          <div style={{ position: "relative", zIndex: 1, paddingTop: 44, paddingLeft: "clamp(20px, 5vw, 60px)", paddingRight: "clamp(20px, 5vw, 60px)" }}>
-            {SCROLL_SECTIONS.map((sec, i) => {
-              const Comp = sec.content;
-              return <div key={i} style={{ borderBottom: i < SCROLL_SECTIONS.length - 1 ? `1px solid ${T.border}` : "none" }}><Comp T={T} /></div>;
-            })}
-          </div>
-        ) : (
-          <>
-            <div key={`${format}-${theme}-${slideIdx}`} style={{ position: "fixed", inset: 0, paddingTop: 44, paddingBottom: 38, zIndex: 1, animation: exiting ? `${dir >= 0 ? "sOut" : "sOutR"} 0.27s ease forwards` : `${dir >= 0 ? "sIn" : "sInR"} 0.3s ease` }}>
-              {SlideComp && <SlideComp T={T} />}
+        {/* Slide */}
+        <div key={cur} style={{
+          position: "absolute", inset: 0, paddingTop: 44, paddingBottom: 38,
+          animation: exiting
+            ? `${dir >= 0 ? "sOut" : "sOutR"} 0.27s ease forwards`
+            : `${dir >= 0 ? "sIn" : "sInR"} 0.3s ease`,
+        }}>
+          <SlideComp />
+        </div>
+
+        {/* Nav arrows */}
+        {cur > 0 && <button onClick={() => go(-1)} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", background: `${T.card}ee`, border: `1px solid ${T.border}`, color: T.textMid, borderRadius: 7, width: 30, height: 30, fontSize: 16, cursor: "pointer", zIndex: 10, display: "flex", alignItems: "center", justifyContent: "center" }}>‹</button>}
+        {cur < SLIDES.length - 1 && <button onClick={() => go(1)} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: `${T.card}ee`, border: `1px solid ${T.border}`, color: T.textMid, borderRadius: 7, width: 30, height: 30, fontSize: 16, cursor: "pointer", zIndex: 10, display: "flex", alignItems: "center", justifyContent: "center" }}>›</button>}
+
+        {/* Progress dots */}
+        <div style={{ position: "absolute", bottom: 8, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 8, zIndex: 10, alignItems: "center" }}>
+          {SLIDES.map((_, i) => (
+            <div key={i} onClick={() => { setDir(i > cur ? 1 : -1); setCur(i); }} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, cursor: "pointer" }}>
+              <div style={{ fontFamily: f.mono, fontSize: 8, color: i === cur ? T.accent : `${T.textDim}55`, letterSpacing: "0.05em", textTransform: "uppercase" }}>{LABELS[i]}</div>
+              <div style={{ width: i === cur ? 18 : 5, height: 4, borderRadius: 2, background: i === cur ? T.accent : `${T.textDim}30`, transition: "all 0.3s ease" }} />
             </div>
-            {slideIdx > 0 && <button onClick={() => go(-1)} style={{ position: "fixed", left: 12, top: "50%", transform: "translateY(-50%)", background: `${T.card}ee`, border: `1px solid ${T.border}`, color: T.textMid, borderRadius: 7, width: 30, height: 30, fontSize: 16, cursor: "pointer", zIndex: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>‹</button>}
-            {slides && slideIdx < slides.length - 1 && <button onClick={() => go(1)} style={{ position: "fixed", right: 12, top: "50%", transform: "translateY(-50%)", background: `${T.card}ee`, border: `1px solid ${T.border}`, color: T.textMid, borderRadius: 7, width: 30, height: 30, fontSize: 16, cursor: "pointer", zIndex: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>›</button>}
-            <div style={{ position: "fixed", bottom: 8, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 8, zIndex: 20, alignItems: "center" }}>
-              {labels.map((lbl, i) => (
-                <div key={i} onClick={() => { setDir(i > slideIdx ? 1 : -1); setSlideIdx(i); }} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, cursor: "pointer" }}>
-                  <div style={{ fontFamily: f.mono, fontSize: 8, color: i === slideIdx ? T.accent : `${T.textDim}55`, letterSpacing: "0.05em", textTransform: "uppercase" }}>{lbl}</div>
-                  <div style={{ width: i === slideIdx ? 18 : 5, height: 4, borderRadius: 2, background: i === slideIdx ? T.accent : `${T.textDim}30`, transition: "all 0.3s ease" }} />
-                </div>
-              ))}
-            </div>
-          </>
-        )}
+          ))}
+        </div>
       </div>
     </>
   );
 }
-    </script>
-    <script type="text/babel">
-      const domNode = document.getElementById('root');
-      const root = ReactDOM.createRoot(domNode);
-      root.render(React.createElement(MasterTemplate));
+
+const domNode = document.getElementById('root');
+const root = ReactDOM.createRoot(domNode);
+root.render(React.createElement(Presentation));
     </script>
   </body>
 </html>
