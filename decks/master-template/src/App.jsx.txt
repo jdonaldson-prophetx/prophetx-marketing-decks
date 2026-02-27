@@ -60,11 +60,56 @@ const DECK = {
 // ── SHARED PRIMITIVES ─────────────────────────────────────────
 const f = { sora: "'Sora', sans-serif", mono: "'JetBrains Mono', monospace" };
 
+// ProphetX icon mark — exact paths from official SVG (169×105 viewBox)
 function BrandMark({ T, size = 26 }) {
+  const w = size * (169 / 105);
+  const h = size;
   return (
-    <div style={{ width: size, height: size, borderRadius: Math.floor(size * 0.22), background: T.accent, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-      <span style={{ fontFamily: f.sora, fontWeight: 800, fontSize: size * 0.48, color: T.onAccent, lineHeight: 1 }}>X</span>
-    </div>
+    <svg width={w} height={h} viewBox="0 0 169 105" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+      <defs>
+        <linearGradient id="bm_g0" x1="132.891" y1="109.971" x2="31.7446" y2="8.8241" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#1DC29A"/><stop offset="0.1032" stopColor="#19BE9D"/>
+          <stop offset="0.6255" stopColor="#06ADAA"/><stop offset="1" stopColor="#00A7AF"/>
+        </linearGradient>
+        <linearGradient id="bm_g1" x1="79.5233" y1="52.5572" x2="-65.2089" y2="52.5572" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#1DC29A"/><stop offset="1" stopColor="#00A7AF"/>
+        </linearGradient>
+        <linearGradient id="bm_g2" x1="26.0754" y1="2.10817" x2="98.5236" y2="43.9991" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#1DC29A"/><stop offset="0.3631" stopColor="#18BD9E"/>
+          <stop offset="0.802" stopColor="#09AFA8"/><stop offset="1" stopColor="#00A7AF"/>
+        </linearGradient>
+      </defs>
+      <path d="M79.5234 73.6005L100.056 104.656H138.201L104.959 54.5195L79.5234 73.6005Z" fill="url(#bm_g0)"/>
+      <path d="M119.241 0.464844L123.153 6.2216L92.2171 29.4536L89.5351 31.4011L64.0995 50.4821L61.4004 52.5661L30.4643 75.6615L26.6891 69.9218L0.0234375 104.65H49.6648L45.8725 98.7739L76.8088 75.6615L79.5078 73.5945L104.943 54.5135L107.625 52.549L138.562 29.4536L142.354 35.1933L169.002 0.464844H119.241Z" fill="url(#bm_g1)"/>
+      <path d="M30.8438 0.464844L64.1031 50.4821L89.5388 31.4011L68.8691 0.464844H30.8438Z" fill="url(#bm_g2)"/>
+    </svg>
+  );
+}
+
+// Full wordmark — white version for dark backgrounds, dark for light
+function Wordmark({ size = 18, color = "white" }) {
+  const h = size;
+  const w = size * (886 / 100);
+  return (
+    <svg width={w} height={h} viewBox="0 0 886 100" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+      <defs>
+        <linearGradient id="wm_g0" x1="853.77" y1="100.796" x2="763.522" y2="10.5487" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#1DC29A"/><stop offset="0.1032" stopColor="#19BE9D"/>
+          <stop offset="0.6255" stopColor="#06ADAA"/><stop offset="1" stopColor="#00A7AF"/>
+        </linearGradient>
+        <linearGradient id="wm_g1" x1="806.164" y1="49.573" x2="677.027" y2="49.573" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#1DC29A"/><stop offset="1" stopColor="#00A7AF"/>
+        </linearGradient>
+        <linearGradient id="wm_g2" x1="758.472" y1="4.56" x2="823.114" y2="41.9371" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#1DC29A"/><stop offset="0.3631" stopColor="#18BD9E"/>
+          <stop offset="0.802" stopColor="#09AFA8"/><stop offset="1" stopColor="#00A7AF"/>
+        </linearGradient>
+      </defs>
+      <path d="M112.758 31.1998C112.758 60.4181 90.8558 76.7877 63.0702 76.7877H36.9611L30.6511 96.038H0L30.3158 3.07881H77.3517C100.153 3.09405 112.758 11.1722 112.758 31.1998ZM81.3297 36.8544C81.3297 31.3217 78.2357 28.5477 70.813 28.5477H52.782L45.1459 51.6694L64.2895 51.5627C74.029 51.5627 81.3297 45.9233 81.3297 36.8544ZM196.664 66.1795L203.523 96.0532H174.091L168.893 72.1542H144.324L136.688 96.0532H106.037L135.91 3.09407H184.379C207.943 3.09407 219.343 12.0562 219.343 30.2091C219.359 46.914 209.513 59.3055 196.664 66.1795ZM151.64 49.688L172.887 49.5813C179.532 49.5813 188.159 45.2679 188.159 36.7477C188.159 30.5444 184.623 28.5629 177.429 28.5629H158.392L151.64 49.688ZM221.249 60.8601C221.249 28.7763 249.461 0 287.093 0C314.314 0 329.922 14.4949 329.922 38.2872C329.922 70.371 301.71 99.1473 264.078 99.1473C236.841 99.1473 221.249 84.6524 221.249 60.8601ZM299.362 43.1493C299.362 31.9771 291.513 26.4444 282.094 26.4444C263.941 26.4444 251.991 42.1586 251.778 55.9828C251.778 67.155 259.627 72.6877 269.047 72.6877C287.2 72.703 299.149 56.9887 299.362 43.1493ZM435.257 31.1998C435.257 60.4181 413.355 76.7877 385.57 76.7877H359.46L353.15 96.038H322.499L352.815 3.07881H399.851C422.637 3.09405 435.257 11.1722 435.257 31.1998ZM403.829 36.8544C403.829 31.3217 400.735 28.5477 393.312 28.5477H375.281L367.645 51.6694L386.789 51.5627C396.528 51.5627 403.829 45.9233 403.829 36.8544ZM554.265 3.09407L524.391 96.0532H493.74L504.257 63.5274H468.622L458.105 96.0532H427.454L457.327 3.09407H487.979L476.684 38.0585H512.32L523.614 3.09407H554.265ZM587.431 27.557L583.559 39.5065H636.677L630.26 59.0921H577.249L573.149 71.5903H626.48L618.509 96.038H534.633L564.629 3.07881H648.84L640.868 27.5418H587.431V27.557ZM746.966 28.6544H714.211L692.187 96.038H661.536L683.56 28.6544H650.028L658.213 3.09407H755.257L746.966 28.6544Z" fill={color}/>
+      <path d="M806.152 68.3453L824.473 96.0547H858.508L828.847 51.3203L806.152 68.3453Z" fill="url(#wm_g0)"/>
+      <path d="M841.602 3.09375L845.093 8.2302L817.49 28.9589L815.097 30.6965L792.402 47.7215L789.994 49.581L762.391 70.1877L759.023 65.0665L735.23 96.0529H779.523L776.139 90.8098L803.742 70.1877L806.15 68.3435L828.845 51.3185L831.238 49.5657L858.841 28.9589L862.224 34.0801L886.001 3.09375H841.602Z" fill="url(#wm_g1)"/>
+      <path d="M762.727 3.09375L792.402 47.7215L815.097 30.6965L796.655 3.09375H762.727Z" fill="url(#wm_g2)"/>
+    </svg>
   );
 }
 
@@ -768,10 +813,9 @@ export default function MasterTemplate() {
 
   const controlBar = (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: 44, background: isScroll ? T.bg : T.bg, borderBottom: `1px solid ${T.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 18px", zIndex: 100, backdropFilter: "blur(8px)" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <BrandMark T={T} size={20} />
-        <span style={{ fontFamily: f.sora, fontWeight: 700, fontSize: 12, color: T.text }}>ProphetX</span>
-        <span style={{ fontFamily: f.mono, fontSize: 8, color: T.textDim, letterSpacing: "0.1em", textTransform: "uppercase" }}>Templates</span>
+      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <Wordmark size={14} color={T.text === "#F0F8FF" ? "white" : "#1B2242"} />
+        <span style={{ fontFamily: f.mono, fontSize: 8, color: T.textDim, letterSpacing: "0.1em", textTransform: "uppercase", borderLeft: `1px solid ${T.border}`, paddingLeft: 8 }}>Templates</span>
       </div>
       <div style={{ display: "flex", gap: 4 }}>
         {Object.values(FORMATS).map(fm => (
