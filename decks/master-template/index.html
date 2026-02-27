@@ -11,7 +11,7 @@
   <body style="margin:0;padding:0;background:#FFFFFF;">
     <div id="root"></div>
     <script type="text/babel">
-import { useState, useEffect, useCallback, useRef } from "react";
+const { useState, useEffect, useCallback, useRef } = React;
 
 const fonts = `@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');`;
 
@@ -746,7 +746,7 @@ const SCROLL_SECTIONS = [
 ];
 
 // ── NAV ENGINE ───────────────────────────────────────────────
-export default function MasterTemplate() {
+function MasterTemplate() {
   const [theme, setTheme] = useState("lightB");
   const [format, setFormat] = useState("proposal");
   const [slideIdx, setSlideIdx] = useState(0);
